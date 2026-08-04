@@ -719,6 +719,7 @@ td.bold{font-weight:600;color:var(--text)}
             <button class="btn btn-ghost btn-sm" onclick="loadAgencias()">↻</button>
           </div>
         </div>
+        <div id="ag-login-hint" style="padding:10px 16px;font-size:12px;color:var(--info,#3b82f6);background:rgba(59,130,246,.08);border-bottom:1px solid rgba(59,130,246,.25);line-height:1.45">🔐 <strong>Login atual da Agência</strong> (ID + palavra-passe) — sempre visível abaixo, mesmo depois de alterado. Só o Fornecedor define/altera este login. O Portal Agence não pode mudar a própria palavra-passe.</div>
         <div class="tbl-wrap">
           <div class="tbl-scroll" id="ag-table-wrap">
             <div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>
@@ -1125,7 +1126,7 @@ td.bold{font-weight:600;color:var(--text)}
         <div class="fg full"><label>Nom</label><input type="text" id="ag-nom"></div>
         <div class="fg"><label>Email</label><input type="email" id="ag-email"></div>
         <div class="fg"><label>Email à l'attribution</label><select id="ag-email-notif"><option value="sim">Oui — notifier par email</option><option value="nao">Non — pas d'email auto</option></select></div>
-        <div class="fg"><label>Mot de passe</label><input type="text" id="ag-pass" autocomplete="new-password"></div>
+        <div class="fg"><label>Palavra-passe atual (login Agência) *</label><input type="text" id="ag-pass" autocomplete="new-password"></div>
         <div class="fg"><label>Méthode paiement</label><select id="ag-meth"><option value="virement">Virement</option><option value="espèces">Espèces</option><option value="carte">Carte</option></select></div>
         <!-- Phase 1 — multi-instances (fournisseur) : design Plan B conservé -->
         <div class="fg full" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--border)">
@@ -2282,8 +2283,7 @@ async function loadAgencias() {
     if (!S.agencias.length) { document.getElementById('ag-table-wrap').innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Aucune agence</div></div>'; return; }
 
     let html = `<table><thead><tr>
-      <th>ID</th><th>Nom</th><th>Email</th><th>Mot de passe</th>
-      <th>Méthode</th><th>Instance</th><th>Statut</th><th>Actions</th>
+      <th>ID (login)</th><th>Nome</th><th>Email</th><th>Palavra-passe atual</th><th>Método</th><th>Instance</th><th>Statut</th><th>Actions</th>
     </tr></thead><tbody>`;
 
     for (const a of S.agencias) {
