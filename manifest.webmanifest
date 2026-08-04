@@ -1,7 +1,7 @@
 {
-  "name": "Agence Ruelas — Fournisseur (bureau)",
-  "short_name": "Ruelas Fournisseur",
-  "description": "Pilotage fournisseur Agence Ruelas — version bureau",
+  "name": "Nhalabene — Fournisseur (bureau)",
+  "short_name": "Nhalabene Fournisseur",
+  "description": "Pilotage fournisseur Nhalabene — Agence Ruelas",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
