@@ -1,12 +1,12 @@
 {
-  "name": "Nhalabene — Fournisseur (bureau)",
-  "short_name": "Nhalabene Fournisseur",
-  "description": "Pilotage fournisseur Nhalabene — Agence Ruelas",
+  "name": "Portal Hotel — Agence Ruelas (FINAL)",
+  "short_name": "Portal Hotel",
+  "description": "Portal Hotel FINAL — Agence Ruelas",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0F1117",
-  "theme_color": "#161B27",
+  "background_color": "#EEF2F7",
+  "theme_color": "#0D2137",
   "orientation": "any",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
