@@ -44,7 +44,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* ═══ LOGIN ═══ */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.05),transparent 60%)}
+#login-screen{position:relative;display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.05),transparent 60%)}
+.lang-top{position:absolute;top:16px;right:16px;display:flex;gap:6px;z-index:10;align-items:center}
+.lang-select-mobile{display:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;border-radius:var(--r);cursor:pointer;background:var(--card);color:var(--text);border:1px solid var(--border);padding:5px 8px}
+.lang-app .lang-select-mobile{width:100%}
+.lp{padding:5px 11px;border-radius:14px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--ts);cursor:pointer;transition:var(--ease);background:transparent}
+.lp:hover{border-color:var(--gold);color:var(--gold)}
+.lp.active{background:var(--gold);color:#12161F;border-color:var(--gold)}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:44px 38px;width:100%;max-width:420px;animation:fadeIn .4s ease;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .login-logo{text-align:center;margin-bottom:28px}
 .login-emblem{width:88px;height:88px;border-radius:20px;overflow:hidden;background:transparent;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 28px rgba(0,0,0,.28);border:1px solid rgba(201,168,76,.35);padding:0}
@@ -79,6 +85,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .topbar-title em{color:var(--gold);font-style:normal}
 .topbar-pill{background:rgba(201,168,76,.12);border:1px solid var(--gold-b);border-radius:12px;padding:2px 10px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.lang-app{display:flex;gap:4px;align-items:center}
 .topbar-user{font-size:11px;color:var(--ts);display:flex;align-items:center;gap:6px}
 .topbar-dot{width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0;animation:pulse 2.5s ease infinite}
 .btn-topbar{padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--ts);cursor:pointer;transition:var(--ease)}
@@ -373,7 +380,12 @@ td.bold{font-weight:600;color:var(--text)}
 
 @media(max-width:900px){.service-grid{grid-template-columns:1fr 1fr}.export-grid{grid-template-columns:1fr}}
 @media(max-width:768px){.sidebar{width:180px}.stats-row{grid-template-columns:repeat(3,1fr)}.form-grid{grid-template-columns:1fr}}
-@media(max-width:560px){.sidebar{display:none}.stats-row{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.sidebar{display:none}.stats-row{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:1fr}
+  .lang-top .lp,.topbar-right .lang-app .lp{display:none}
+  .lang-top .lang-select-mobile,.topbar-right .lang-app .lang-select-mobile{display:block}
+  .lang-top .lang-select-mobile{min-height:40px;font-size:14px}
+  .topbar-right .lang-app .lang-select-mobile{min-width:64px}
+}
 </style>
 <meta name="theme-color" content="#161B27">
 <link rel="manifest" href="manifest.webmanifest">
@@ -390,27 +402,39 @@ td.bold{font-weight:600;color:var(--text)}
 
 <!-- ═══ LOGIN ═══ -->
 <div id="login-screen">
+  <div class="lang-top">
+    <button type="button" class="lp active" onclick="setLang('PT','login')">PT</button>
+    <button type="button" class="lp" onclick="setLang('EN','login')">EN</button>
+    <button type="button" class="lp" onclick="setLang('FR','login')">FR</button>
+    <button type="button" class="lp" onclick="setLang('ES','login')">ES</button>
+    <select id="lang-login-sel" class="lang-select-mobile" aria-label="Idioma" onchange="setLang(this.value,'login')">
+      <option value="PT">Português (PT)</option>
+      <option value="EN">English (EN)</option>
+      <option value="FR">Français (FR)</option>
+      <option value="ES">Español (ES)</option>
+    </select>
+  </div>
   <div class="login-box">
     <div class="login-logo">
       <div class="login-emblem"><img src="logo-login.png" alt="Agence Ruelas" width="160" height="160" decoding="async"></div>
       <div class="login-brand">Agence Ruelas</div>
-      <div class="login-badge">👑 Fournisseur</div>
+      <div class="login-badge" id="lbl-login-badge">👑 Fournisseur</div>
     </div>
     <div class="login-divider"></div>
-    <div class="login-title">🔐 Accès Fournisseur Ruelas</div>
+    <div class="login-title" id="lbl-login-title">🔐 Accès Fournisseur Ruelas</div>
     <div class="login-err" id="login-err"></div>
     <div class="f-group">
-      <label>Identifiant</label>
+      <label id="lbl-admin-id">Identifiant</label>
       <input type="text" class="f-inp" id="admin-id" placeholder="MASTER_ADMIN" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <div class="f-group">
-      <label>Mot de Passe</label>
+      <label id="lbl-admin-pass">Mot de Passe</label>
       <input type="password" class="f-inp" id="admin-pass" placeholder="••••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <button class="btn-login" id="login-btn" onclick="doLogin()">
-      <div class="sp"></div><span>Accéder</span>
+      <div class="sp"></div><span id="lbl-login-btn">Accéder</span>
     </button>
-    <div class="login-footer">Accès restreint — Fournisseur Agence Ruelas</div>
+    <div class="login-footer" id="login-footer">Accès restreint — Fournisseur Agence Ruelas</div>
   </div>
 </div>
 
@@ -424,14 +448,26 @@ td.bold{font-weight:600;color:var(--text)}
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo"><img src="logo-topbar.png" alt="Ruelas" width="72" height="72" decoding="async"></div>
-      <div class="topbar-title">Agence <em>Ruelas</em> · <em>Fournisseur</em></div>
-      <div class="topbar-pill">FOURNISSEUR</div>
+      <div class="topbar-title">Agence <em>Ruelas</em> · <em id="lbl-topbar-fournisseur">Fournisseur</em></div>
+      <div class="topbar-pill" id="lbl-topbar-pill">FOURNISSEUR</div>
     </div>
     <div class="topbar-right">
       <div class="topbar-user"><span class="topbar-dot"></span><span id="admin-nom">Admin</span></div>
       <span style="font-size:11px;color:var(--tl);font-family:var(--mono)" id="sys-clock">—</span>
-      <button class="btn-topbar" onclick="doRefresh()">↻ Actualiser</button>
-      <button class="btn-topbar danger" onclick="doLogout()">⎋ Déconnexion</button>
+      <div class="lang-app">
+        <button type="button" class="lp active" onclick="setLang('PT','app')">PT</button>
+        <button type="button" class="lp" onclick="setLang('EN','app')">EN</button>
+        <button type="button" class="lp" onclick="setLang('FR','app')">FR</button>
+        <button type="button" class="lp" onclick="setLang('ES','app')">ES</button>
+        <select id="lang-app-sel" class="lang-select-mobile" aria-label="Idioma" onchange="setLang(this.value,'app')">
+          <option value="PT">Português (PT)</option>
+          <option value="EN">English (EN)</option>
+          <option value="FR">Français (FR)</option>
+          <option value="ES">Español (ES)</option>
+        </select>
+      </div>
+      <button class="btn-topbar" id="btn-refresh" onclick="doRefresh()">↻ Actualiser</button>
+      <button class="btn-topbar danger" id="btn-logout" onclick="doLogout()">⎋ Déconnexion</button>
     </div>
   </div>
 
@@ -439,29 +475,29 @@ td.bold{font-weight:600;color:var(--text)}
 
     <!-- SIDEBAR -->
     <nav class="sidebar">
-      <div class="nav-section">Dashboard</div>
-      <button class="nav-item active" id="nav-overview" onclick="showSection('overview')"><span class="nav-icon">📊</span> Vue d'ensemble</button>
+      <div class="nav-section" id="lbl-nav-sec-dashboard">Dashboard</div>
+      <button class="nav-item active" id="nav-overview" onclick="showSection('overview')"><span class="nav-icon">📊</span> <span id="lbl-nav-overview">Vue d'ensemble</span></button>
 
-      <div class="nav-section">Base de données</div>
-      <button class="nav-item" id="nav-reservas" onclick="showSection('reservas')"><span class="nav-icon">📋</span> Réservations<span class="nav-badge" id="nb-pend">0</span></button>
-      <button class="nav-item" id="nav-upcoming" onclick="showSection('upcoming')"><span class="nav-icon">🗓</span> Próximas Transferências<span class="nav-badge gold" id="nb-upcoming" style="display:none">0</span></button>
-      <button class="nav-item" id="nav-nova-reserva" onclick="showSection('nova-reserva')"><span class="nav-icon">➕</span> Nova reserva</button>
-      <button class="nav-item" id="nav-agencias" onclick="showSection('agencias')"><span class="nav-icon">🏢</span> Agences</button>
-      <button class="nav-item" id="nav-prices" onclick="showSection('prices')"><span class="nav-icon">💰</span> Prix</button>
+      <div class="nav-section" id="lbl-nav-sec-db">Base de données</div>
+      <button class="nav-item" id="nav-reservas" onclick="showSection('reservas')"><span class="nav-icon">📋</span> <span id="lbl-nav-reservas">Réservations</span><span class="nav-badge" id="nb-pend">0</span></button>
+      <button class="nav-item" id="nav-upcoming" onclick="showSection('upcoming')"><span class="nav-icon">🗓</span> <span id="lbl-nav-upcoming">Próximas Transferências</span><span class="nav-badge gold" id="nb-upcoming" style="display:none">0</span></button>
+      <button class="nav-item" id="nav-nova-reserva" onclick="showSection('nova-reserva')"><span class="nav-icon">➕</span> <span id="lbl-nav-nova">Nova reserva</span></button>
+      <button class="nav-item" id="nav-agencias" onclick="showSection('agencias')"><span class="nav-icon">🏢</span> <span id="lbl-nav-agencias">Agences</span></button>
+      <button class="nav-item" id="nav-prices" onclick="showSection('prices')"><span class="nav-icon">💰</span> <span id="lbl-nav-prices">Prix</span></button>
 
-      <div class="nav-section">Contrôle Accès</div>
-      <button class="nav-item" id="nav-permissions" onclick="showSection('permissions')"><span class="nav-icon">🔐</span> Permissions<span class="nav-badge gold" id="nb-bloque" style="display:none">!</span></button>
-      <button class="nav-item" id="nav-services" onclick="showSection('services')"><span class="nav-icon">⚙️</span> Services</button>
+      <div class="nav-section" id="lbl-nav-sec-access">Contrôle Accès</div>
+      <button class="nav-item" id="nav-permissions" onclick="showSection('permissions')"><span class="nav-icon">🔐</span> <span id="lbl-nav-permissions">Permissions</span><span class="nav-badge gold" id="nb-bloque" style="display:none">!</span></button>
+      <button class="nav-item" id="nav-services" onclick="showSection('services')"><span class="nav-icon">⚙️</span> <span id="lbl-nav-services">Services</span></button>
 
-      <div class="nav-section">Configuration</div>
-      <button class="nav-item" id="nav-templates" onclick="showSection('templates')"><span class="nav-icon">✉️</span> Email Templates</button>
+      <div class="nav-section" id="lbl-nav-sec-config">Configuration</div>
+      <button class="nav-item" id="nav-templates" onclick="showSection('templates')"><span class="nav-icon">✉️</span> <span id="lbl-nav-templates">Email Templates</span></button>
 
-      <div class="nav-section">Exports</div>
-      <button class="nav-item" id="nav-exports" onclick="showSection('exports')"><span class="nav-icon">📥</span> Export PDF / Excel</button>
+      <div class="nav-section" id="lbl-nav-sec-exports">Exports</div>
+      <button class="nav-item" id="nav-exports" onclick="showSection('exports')"><span class="nav-icon">📥</span> <span id="lbl-nav-exports">Export PDF / Excel</span></button>
 
-      <div class="nav-section">Système</div>
-      <button class="nav-item" id="nav-logs" onclick="showSection('logs')"><span class="nav-icon">📁</span> Logs Système</button>
-      <button class="nav-item" id="nav-backup" onclick="showSection('backup')"><span class="nav-icon">💾</span> Backup / Import</button>
+      <div class="nav-section" id="lbl-nav-sec-system">Système</div>
+      <button class="nav-item" id="nav-logs" onclick="showSection('logs')"><span class="nav-icon">📁</span> <span id="lbl-nav-logs">Logs Système</span></button>
+      <button class="nav-item" id="nav-backup" onclick="showSection('backup')"><span class="nav-icon">💾</span> <span id="lbl-nav-backup">Backup / Import</span></button>
     </nav>
 
     <!-- MAIN -->
@@ -967,7 +1003,7 @@ td.bold{font-weight:600;color:var(--text)}
                 </select>
               </div>
               <div class="fg"><label>Données JSON (tableau de tableaux)</label>
-                <textarea id="import-data" style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:8px;font-family:var(--mono);font-size:11px;color:var(--text);width:100%;min-height:100px;resize:vertical" placeholder='[["NL-2501-11001","2025-01-10","pendente",...], ...]'></textarea>
+                <textarea id="import-data" style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:8px;font-family:var(--mono);font-size:11px;color:var(--text);width:100%;min-height:100px;resize:vertical" placeholder='[["RU-2501-11001","2025-01-10","pendente",...], ...]'></textarea>
               </div>
               <button class="btn btn-danger" onclick="doImport()">⬆ Importer (remplace les données)</button>
             </div>
@@ -1178,6 +1214,103 @@ td.bold{font-weight:600;color:var(--text)}
 ═══════════════════════════════════════ -->
 <script>
 // ─────────────────────────────────────────────
+// LANGUE (PT / EN / FR / ES)
+// ─────────────────────────────────────────────
+let APP_LANG = localStorage.getItem('ruelas_planb_lang') || 'PT';
+const UI = {
+  PT:{
+    loginBadge:'👑 Fornecedor', loginTitle:'🔐 Acesso Fornecedor Ruelas', idLabel:'Identificador', passLabel:'Palavra-passe',
+    loginBtn:'Aceder', loginFooter:'Acesso restrito — Fornecedor Agence Ruelas',
+    errEmpty:'Preencher todos os campos.', errConn:'Erro de ligação. Verifique API_URL.', errInvalid:'Credenciais incorretas.',
+    topbarFournisseur:'Fornecedor', pillFournisseur:'FORNECEDOR', refreshBtn:'↻ Atualizar', logoutBtn:'⎋ Sair',
+    secDashboard:'Dashboard', secDb:'Base de Dados', secAccess:'Controlo de Acesso', secConfig:'Configuração', secExports:'Exportações', secSystem:'Sistema',
+    navOverview:'Visão Geral', navReservas:'Reservas', navUpcoming:'Próximas Transferências', navNova:'Nova Reserva',
+    navAgencias:'Agências', navPrices:'Preços', navPermissions:'Permissões', navServices:'Serviços',
+    navTemplates:'Modelos de Email', navExportsItem:'Exportar PDF / Excel', navLogs:'Logs do Sistema', navBackup:'Backup / Importação'
+  },
+  EN:{
+    loginBadge:'👑 Supplier', loginTitle:'🔐 Ruelas Supplier Access', idLabel:'Admin ID', passLabel:'Password',
+    loginBtn:'Access', loginFooter:'Restricted access — Agence Ruelas Supplier',
+    errEmpty:'Fill in all fields.', errConn:'Connection error. Check API_URL.', errInvalid:'Incorrect credentials.',
+    topbarFournisseur:'Supplier', pillFournisseur:'SUPPLIER', refreshBtn:'↻ Refresh', logoutBtn:'⎋ Sign out',
+    secDashboard:'Dashboard', secDb:'Database', secAccess:'Access Control', secConfig:'Configuration', secExports:'Exports', secSystem:'System',
+    navOverview:'Overview', navReservas:'Reservations', navUpcoming:'Upcoming Transfers', navNova:'New Reservation',
+    navAgencias:'Agencies', navPrices:'Prices', navPermissions:'Permissions', navServices:'Services',
+    navTemplates:'Email Templates', navExportsItem:'Export PDF / Excel', navLogs:'System Logs', navBackup:'Backup / Import'
+  },
+  FR:{
+    loginBadge:'👑 Fournisseur', loginTitle:'🔐 Accès Fournisseur Ruelas', idLabel:'Identifiant', passLabel:'Mot de Passe',
+    loginBtn:'Accéder', loginFooter:'Accès restreint — Fournisseur Agence Ruelas',
+    errEmpty:'Remplir tous les champs.', errConn:'Erreur de connexion. Vérifiez API_URL.', errInvalid:'Identifiants incorrects.',
+    topbarFournisseur:'Fournisseur', pillFournisseur:'FOURNISSEUR', refreshBtn:'↻ Actualiser', logoutBtn:'⎋ Déconnexion',
+    secDashboard:'Dashboard', secDb:'Base de Données', secAccess:'Contrôle Accès', secConfig:'Configuration', secExports:'Exports', secSystem:'Système',
+    navOverview:"Vue d'ensemble", navReservas:'Réservations', navUpcoming:'Prochains Transferts', navNova:'Nouvelle Réservation',
+    navAgencias:'Agences', navPrices:'Prix', navPermissions:'Permissions', navServices:'Services',
+    navTemplates:'Modèles Email', navExportsItem:'Export PDF / Excel', navLogs:'Logs Système', navBackup:'Backup / Import'
+  },
+  ES:{
+    loginBadge:'👑 Proveedor', loginTitle:'🔐 Acceso Proveedor Ruelas', idLabel:'Identificador', passLabel:'Contraseña',
+    loginBtn:'Acceder', loginFooter:'Acceso restringido — Proveedor Agence Ruelas',
+    errEmpty:'Rellenar todos los campos.', errConn:'Error de conexión. Verifique API_URL.', errInvalid:'Credenciales incorrectas.',
+    topbarFournisseur:'Proveedor', pillFournisseur:'PROVEEDOR', refreshBtn:'↻ Actualizar', logoutBtn:'⎋ Salir',
+    secDashboard:'Dashboard', secDb:'Base de Datos', secAccess:'Control de Acceso', secConfig:'Configuración', secExports:'Exportaciones', secSystem:'Sistema',
+    navOverview:'Resumen', navReservas:'Reservas', navUpcoming:'Próximas Transferencias', navNova:'Nueva Reserva',
+    navAgencias:'Agencias', navPrices:'Precios', navPermissions:'Permisos', navServices:'Servicios',
+    navTemplates:'Plantillas de Email', navExportsItem:'Exportar PDF / Excel', navLogs:'Registros del Sistema', navBackup:'Backup / Importación'
+  }
+};
+function t(k){ return (UI[APP_LANG]&&UI[APP_LANG][k]) || (UI.FR&&UI.FR[k]) || k; }
+function setLang(lang, zone){
+  if(!UI[lang]) lang='PT';
+  APP_LANG = lang;
+  try{ localStorage.setItem('ruelas_planb_lang', lang); }catch(e){}
+  const sel = zone==='login' ? '#login-screen .lang-top .lp' : '.topbar-right .lang-app .lp';
+  document.querySelectorAll(sel).forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll(sel).forEach(p=>{ if(p.textContent.trim()===lang) p.classList.add('active'); });
+  const loginSel = document.getElementById('lang-login-sel');
+  if(loginSel) loginSel.value = lang;
+  const appSel = document.getElementById('lang-app-sel');
+  if(appSel) appSel.value = lang;
+  applyUiLang();
+}
+function applyUiLang(){
+  const s=(id,v)=>{ const el=document.getElementById(id); if(el && v!=null) el.textContent=v; };
+  s('lbl-login-badge', t('loginBadge'));
+  s('lbl-login-title', t('loginTitle'));
+  s('lbl-admin-id', t('idLabel'));
+  s('lbl-admin-pass', t('passLabel'));
+  s('lbl-login-btn', t('loginBtn'));
+  s('login-footer', t('loginFooter'));
+  s('lbl-topbar-fournisseur', t('topbarFournisseur'));
+  s('lbl-topbar-pill', t('pillFournisseur'));
+  s('btn-refresh', t('refreshBtn'));
+  s('btn-logout', t('logoutBtn'));
+  s('lbl-nav-sec-dashboard', t('secDashboard'));
+  s('lbl-nav-sec-db', t('secDb'));
+  s('lbl-nav-sec-access', t('secAccess'));
+  s('lbl-nav-sec-config', t('secConfig'));
+  s('lbl-nav-sec-exports', t('secExports'));
+  s('lbl-nav-sec-system', t('secSystem'));
+  s('lbl-nav-overview', t('navOverview'));
+  s('lbl-nav-reservas', t('navReservas'));
+  s('lbl-nav-upcoming', t('navUpcoming'));
+  s('lbl-nav-nova', t('navNova'));
+  s('lbl-nav-agencias', t('navAgencias'));
+  s('lbl-nav-prices', t('navPrices'));
+  s('lbl-nav-permissions', t('navPermissions'));
+  s('lbl-nav-services', t('navServices'));
+  s('lbl-nav-templates', t('navTemplates'));
+  s('lbl-nav-exports', t('navExportsItem'));
+  s('lbl-nav-logs', t('navLogs'));
+  s('lbl-nav-backup', t('navBackup'));
+}
+function initLangUI(){
+  setLang(APP_LANG, 'login');
+  setLang(APP_LANG, 'app');
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', initLangUI); } else { initLangUI(); }
+
+// ─────────────────────────────────────────────
 // ÉTAT GLOBAL
 // ─────────────────────────────────────────────
 const S = {
@@ -1364,7 +1497,7 @@ async function doLogin() {
   const pass = document.getElementById('admin-pass').value.trim();
   const err  = document.getElementById('login-err');
   const btn  = document.getElementById('login-btn');
-  if (!id || !pass) { err.textContent = 'Remplir tous les champs.'; err.classList.add('show'); return; }
+  if (!id || !pass) { err.textContent = t('errEmpty'); err.classList.add('show'); return; }
   err.classList.remove('show'); btn.classList.add('loading'); btn.disabled = true;
   try {
     const d = await api({ action: 'connexionPlanB', adminId: id, motDePasse: pass });
@@ -1374,11 +1507,11 @@ async function doLogin() {
       bumpPlanBActivity();
       bootApp();
     } else {
-      err.textContent = d.error || 'Identifiants incorrects.';
+      err.textContent = d.error || t('errInvalid');
       err.classList.add('show');
     }
   } catch (e) {
-    err.textContent = 'Erreur de connexion. Vérifiez API_URL.';
+    err.textContent = t('errConn');
     err.classList.add('show');
   } finally {
     btn.classList.remove('loading'); btn.disabled = false;
@@ -3092,10 +3225,10 @@ function getDemoPricesStore() {
 
 function demoApi(p) {
   const DEMO_RES = [
-    { id:'NL-2501-11001', statut:'pendente', clientNom:'Maria Silva', clientEmail:'maria@email.com', telephone:'+351912345678', numReservaOta:'BKG-88392', origineType:'airport', pointDepart:'Lisbon Airport', destination:'Agence Ruelas', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'14:30', personnes:'2', malas:'2', numVol:'TP234', numChambre:'', prixFinal:'35', agencyId:'AGN001', statutPaiement:'non_payé', commentaires:'', nonAttribuee: true },
-    { id:'NL-2501-11002', statut:'confirmado', clientNom:'John Smith', clientEmail:'john@email.com', telephone:'+44780012345', numReservaOta:'BKG-77123', origineType:'hotel', pointDepart:'Agence Ruelas', destination:'Lisbon Airport', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'08:00', personnes:'3', malas:'4', numVol:'', numChambre:'105', prixFinal:'35', agencyId:'AGN001', statutPaiement:'payé', commentaires:'Early checkout', nonAttribuee: false },
-    { id:'NL-2501-11003', statut:'realizado', clientNom:'Sophie Dupont', clientEmail:'sophie@email.fr', telephone:'+33612345678', numReservaOta:'BKG-99001', origineType:'airport', pointDepart:'Lisbon Airport', destination:'Agence Ruelas', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'18:00', personnes:'1', malas:'1', numVol:'AF321', numChambre:'', prixFinal:'35', agencyId:'AGN002', statutPaiement:'payé', commentaires:'VIP', nonAttribuee: false },
-    { id:'NL-2501-11004', statut:'cancelado', clientNom:'Marco Rossi', clientEmail:'marco@email.it', telephone:'+39312345678', numReservaOta:'BKG-55432', origineType:'hotel', pointDepart:'Agence Ruelas', destination:'Gare do Oriente', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'10:00', personnes:'4', malas:'6', numVol:'', numChambre:'201', prixFinal:'20', agencyId:'', statutPaiement:'remboursé', commentaires:'Annulation client', nonAttribuee: false }
+    { id:'RU-2501-11001', statut:'pendente', clientNom:'Maria Silva', clientEmail:'maria@email.com', telephone:'+351912345678', numReservaOta:'BKG-88392', origineType:'airport', pointDepart:'Lisbon Airport', destination:'Agence Ruelas', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'14:30', personnes:'2', malas:'2', numVol:'TP234', numChambre:'', prixFinal:'35', agencyId:'AGN001', statutPaiement:'non_payé', commentaires:'', nonAttribuee: true },
+    { id:'RU-2501-11002', statut:'confirmado', clientNom:'John Smith', clientEmail:'john@email.com', telephone:'+44780012345', numReservaOta:'BKG-77123', origineType:'hotel', pointDepart:'Agence Ruelas', destination:'Lisbon Airport', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'08:00', personnes:'3', malas:'4', numVol:'', numChambre:'105', prixFinal:'35', agencyId:'AGN001', statutPaiement:'payé', commentaires:'Early checkout', nonAttribuee: false },
+    { id:'RU-2501-11003', statut:'realizado', clientNom:'Sophie Dupont', clientEmail:'sophie@email.fr', telephone:'+33612345678', numReservaOta:'BKG-99001', origineType:'airport', pointDepart:'Lisbon Airport', destination:'Agence Ruelas', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'18:00', personnes:'1', malas:'1', numVol:'AF321', numChambre:'', prixFinal:'35', agencyId:'AGN002', statutPaiement:'payé', commentaires:'VIP', nonAttribuee: false },
+    { id:'RU-2501-11004', statut:'cancelado', clientNom:'Marco Rossi', clientEmail:'marco@email.it', telephone:'+39312345678', numReservaOta:'BKG-55432', origineType:'hotel', pointDepart:'Agence Ruelas', destination:'Gare do Oriente', dateTransfer: new Date().toISOString().slice(0,10), heureTransfer:'10:00', personnes:'4', malas:'6', numVol:'', numChambre:'201', prixFinal:'20', agencyId:'', statutPaiement:'remboursé', commentaires:'Annulation client', nonAttribuee: false }
   ];
   const DEMO_AG = [
     { id:'AGN001', nom:'Agência Lisboa Premium', email:'lisboa@agencia.pt', motDePasse:'agn001pass', statut:'actif', methodePaiement:'virement' },
@@ -3115,7 +3248,7 @@ function demoApi(p) {
     { date: new Date().toLocaleString('fr-FR'), action:'CONNEXION_MASTER', utilisateur:'MASTER_ADMIN', details:'{"ip":"192.168.1.1"}' },
     { date: new Date().toLocaleString('fr-FR'), action:'PERMISSION_CHANGE', utilisateur:'MASTER_ADMIN', details:'{"agency":"AGN003","action":"blocked"}' },
     { date: new Date().toLocaleString('fr-FR'), action:'SERVICE_TOGGLE', utilisateur:'MASTER_ADMIN', details:'{"service":"notifications_email","actif":true}' },
-    { date: new Date().toLocaleString('fr-FR'), action:'NOUVELLE_RESERVATION', utilisateur:'AGN001', details:'{"id":"NL-2501-11001"}' },
+    { date: new Date().toLocaleString('fr-FR'), action:'NOUVELLE_RESERVATION', utilisateur:'AGN001', details:'{"id":"RU-2501-11001"}' },
     { date: new Date().toLocaleString('fr-FR'), action:'CONNEXION_AGENCE', utilisateur:'AGN001', details:'{"nom":"Agência Lisboa Premium"}' }
   ];
   const DEMO_PERMS = {
@@ -3133,7 +3266,7 @@ function demoApi(p) {
         else resolve({ success: false, error: 'Identifiants incorrects.' });
         break;
       case 'getStats': resolve({ success: true, stats: { total: 4, pendentes: 1, confirmadas: 1, canceladas: 1, realizadas: 1 } }); break;
-      case 'creerReservacaoERP': resolve({ success: true, id: 'NL-DEMO-' + String(Date.now()).slice(-6) }); break;
+      case 'creerReservacaoERP': resolve({ success: true, id: 'RU-DEMO-' + String(Date.now()).slice(-6) }); break;
       case 'planb_getAll': resolve({ success: true, reservations: DEMO_RES, stats: { total: 4, pendentes: 1, confirmadas: 1, canceladas: 1, realizadas: 1 } }); break;
       case 'planb_editReserva': resolve({ success: true, modifications: [{ champ: 'statut' }] }); break;
       case 'planb_deleteReserva': resolve({ success: true }); break;
