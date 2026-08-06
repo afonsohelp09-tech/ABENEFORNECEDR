@@ -1,7 +1,7 @@
 {
   "name": "Nhalabene",
   "short_name": "Nhalabene",
-  "description": "Console privée Nhalabene",
+  "description": "Nhalabene — accès privé",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

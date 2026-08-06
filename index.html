@@ -534,6 +534,92 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   .topbar-title{max-width:110px}
   .btn-topbar{padding:8px;font-size:10px}
 }
+
+/* ═══ PACK SIZING MOBILE EXHAUSTIF (GUIDE-MOBILE-SIZING) ═══ */
+:root{
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+}
+@media(max-width:640px){
+  body{font-size:1rem;line-height:1.5}
+  h1,.login-brand{font-size:clamp(1.5rem,5vw,1.75rem);font-weight:700;line-height:1.2}
+  h2,.card-ttl,.sec-ttl{font-size:clamp(1.25rem,4vw,1.375rem);font-weight:600;line-height:1.25}
+  h3,.stat-lbl{font-size:clamp(1.0625rem,3.5vw,1.125rem);font-weight:600;line-height:1.3}
+  .login-box{max-width:400px;width:100%;padding:1.25rem;margin:0 auto;box-sizing:border-box;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .login-emblem{width:72px;height:72px;max-height:80px;margin-bottom:1.5rem}
+  .f-group{margin-bottom:1rem}
+  .f-inp,input.f-inp,select.f-inp,textarea{min-height:50px;font-size:1rem!important;padding:12px 14px}
+  .btn-login,.btn-primary{width:100%;min-height:50px;font-size:1rem;font-weight:700}
+  .topbar{min-height:56px;height:auto;padding-left:max(1rem,var(--safe-left));padding-right:max(1rem,var(--safe-right));padding-top:var(--safe-top)}
+  .topbar-title{font-size:1.125rem;font-weight:600}
+  .btn-menu,.modal-close,.theme-btn{min-width:48px;min-height:48px;width:48px;height:48px}
+  .sidebar{width:min(85vw,320px);max-width:320px}
+  .nav-item{min-height:48px;padding:12px 14px;gap:12px}
+  .service-grid,.form-grid,.stats-row,.export-grid{grid-template-columns:1fr!important;gap:12px}
+  .card,.stat-card{padding:1rem;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .main{padding:1rem;padding-bottom:max(1.25rem,var(--safe-bottom))}
+  button,.btn,.btn-topbar{min-height:48px}
+  .overlay{padding:0;align-items:flex-end}
+  .modal{
+    width:100%!important;max-width:100%!important;height:auto!important;
+    max-height:85dvh!important;max-height:85vh!important;
+    border-radius:20px 20px 0 0!important;margin:0!important;
+    padding-bottom:max(1.25rem,var(--safe-bottom));
+    display:flex;flex-direction:column;
+  }
+  .modal::before,.modal-sheet-handle{
+    content:'';display:block;width:40px;height:4px;border-radius:99px;
+    background:rgba(128,128,128,.35);margin:12px auto 8px;flex-shrink:0;
+  }
+  .modal:has(.modal-sheet-handle)::before{display:none!important}
+  .modal-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.25rem}
+  .modal-footer{flex-direction:column;gap:10px;padding:12px 1.25rem;padding-bottom:max(12px,var(--safe-bottom))}
+  .modal-footer .btn, .modal-footer button{width:100%;min-height:50px}
+  input,select,textarea{font-size:1rem!important}
+}
+@media(max-width:480px){
+  .badge,.nav-badge,.topbar-pill{font-size:.75rem}
+  .helper,.hint,.login-footer{font-size:.8125rem;line-height:1.4}
+}
+
+/* ═══ HARMONISATION (RECOMMANDATIONS-MOBILE-RESPONSIVE) — paliers manquants + modales plein écran ═══ */
+@media(max-width:900px){
+  .service-grid{grid-template-columns:1fr 1fr}
+  .export-grid,.form-grid{grid-template-columns:1fr}
+  .main{padding:14px}
+}
+@media(max-width:600px){
+  .overlay{padding:0!important;align-items:stretch!important}
+  .modal{
+    width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+    border-radius:0!important;margin:0!important;
+    display:flex;flex-direction:column;
+  }
+  .modal::before{display:none!important}
+  .modal-sheet-handle{display:none!important}
+  .modal-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .modal-footer{
+    display:flex;flex-direction:column;gap:8px;
+    position:sticky;bottom:0;background:var(--surface,var(--card,#161B27));
+    padding:12px;padding-bottom:max(12px,env(safe-area-inset-bottom,0px));
+  }
+  .modal-footer button,.modal-footer .btn{width:100%}
+}
+@media(max-width:430px){
+  .login-box{padding:22px 14px;margin:0 8px;border-radius:14px}
+  .login-emblem{width:56px;height:56px}
+  .topbar-title{font-size:13px;max-width:120px}
+  .btn-topbar{padding:8px 8px;font-size:10px}
+  .stats-row,.service-grid{grid-template-columns:1fr!important;gap:10px}
+  .nav-item{padding:12px 12px;font-size:13px}
+  .main{padding:10px}
+}
+@media(max-width:380px){
+  .login-brand{font-size:16px}
+  .topbar-logo{width:24px;height:24px}
+}
 </style>
 <meta name="theme-color" content="#161B27">
 <link rel="manifest" href="manifest.webmanifest">
@@ -544,7 +630,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Ruelas Admin">
+<meta name="apple-mobile-web-app-title" content="Nhalabene">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
@@ -573,7 +659,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
     <div class="login-logo">
       <div class="login-emblem"><img src="logo-login.png" alt="Nhalabene" width="160" height="160" decoding="async"></div>
       <div class="login-brand">Nhalabene</div>
-      <div class="login-badge" id="lbl-login-badge">👑 Console</div>
+      <div class="login-badge" id="lbl-login-badge">👑 Nhalabene</div>
     </div>
     <div class="login-divider"></div>
     <div class="login-title" id="lbl-login-title">🔐 Accès Nhalabene</div>
@@ -604,7 +690,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
     <button type="button" class="btn-menu" id="btn-menu" onclick="toggleNav()" aria-label="Menu">☰</button>
     <div class="topbar-brand">
       <div class="topbar-logo"><img src="logo-topbar.png" alt="Nhalabene" width="72" height="72" decoding="async"></div>
-      <div class="topbar-title">Nhalabene · <em id="lbl-topbar-role">Console</em></div>
+      <div class="topbar-title" id="lbl-topbar-role">Nhalabene</div>
       <div class="topbar-pill" id="lbl-topbar-pill">PRIVÉ</div>
     </div>
     <div class="topbar-right">
@@ -1426,40 +1512,40 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
 let APP_LANG = localStorage.getItem('ruelas_planb_lang') || 'PT';
 const UI = {
   PT:{
-    loginBadge:'👑 Consola', loginTitle:'🔐 Acesso Nhalabene', idLabel:'Identificador', passLabel:'Palavra-passe',
+    loginBadge:'👑 Nhalabene', loginTitle:'🔐 Acesso Nhalabene', idLabel:'Identificador', passLabel:'Palavra-passe',
     loginBtn:'Aceder', loginFooter:'Acesso restrito — Nhalabene',
     errEmpty:'Preencher todos os campos.', errConn:'Erro de ligação. Verifique API_URL.', errInvalid:'Credenciais incorretas.',
-    topbarRole:'Consola', pillRole:'PRIVADO', refreshBtn:'↻ Atualizar', logoutBtn:'⎋ Sair',
+    topbarRole:'Nhalabene', pillRole:'PRIVADO', refreshBtn:'↻ Atualizar', logoutBtn:'⎋ Sair',
     secDashboard:'Dashboard', secDb:'Base de Dados', secAccess:'Controlo de Acesso', secConfig:'Configuração', secExports:'Exportações', secSystem:'Sistema',
     navOverview:'Visão Geral', navReservas:'Reservas', navUpcoming:'Próximas Transferências', navNova:'Nova Reserva',
     navAgencias:'Agências', navPrices:'Preços', navPermissions:'Permissões', navServices:'Serviços',
     navTemplates:'Modelos de Email', navExportsItem:'Exportar PDF / Excel', navLogs:'Logs do Sistema', navBackup:'Backup / Importação'
   },
   EN:{
-    loginBadge:'👑 Console', loginTitle:'🔐 Nhalabene Access', idLabel:'Admin ID', passLabel:'Password',
+    loginBadge:'👑 Nhalabene', loginTitle:'🔐 Nhalabene Access', idLabel:'Admin ID', passLabel:'Password',
     loginBtn:'Access', loginFooter:'Restricted access — Nhalabene',
     errEmpty:'Fill in all fields.', errConn:'Connection error. Check API_URL.', errInvalid:'Incorrect credentials.',
-    topbarRole:'Console', pillRole:'PRIVATE', refreshBtn:'↻ Refresh', logoutBtn:'⎋ Sign out',
+    topbarRole:'Nhalabene', pillRole:'PRIVATE', refreshBtn:'↻ Refresh', logoutBtn:'⎋ Sign out',
     secDashboard:'Dashboard', secDb:'Database', secAccess:'Access Control', secConfig:'Configuration', secExports:'Exports', secSystem:'System',
     navOverview:'Overview', navReservas:'Reservations', navUpcoming:'Upcoming Transfers', navNova:'New Reservation',
     navAgencias:'Agencies', navPrices:'Prices', navPermissions:'Permissions', navServices:'Services',
     navTemplates:'Email Templates', navExportsItem:'Export PDF / Excel', navLogs:'System Logs', navBackup:'Backup / Import'
   },
   FR:{
-    loginBadge:'👑 Console',     loginTitle:'🔐 Accès Nhalabene', idLabel:'Identifiant', passLabel:'Mot de Passe',
+    loginBadge:'👑 Nhalabene',     loginTitle:'🔐 Accès Nhalabene', idLabel:'Identifiant', passLabel:'Mot de Passe',
     loginBtn:'Accéder', loginFooter:'Accès restreint — Nhalabene',
     errEmpty:'Remplir tous les champs.', errConn:'Erreur de connexion. Vérifiez API_URL.', errInvalid:'Identifiants incorrects.',
-    topbarRole:'Console', pillRole:'PRIVÉ', refreshBtn:'↻ Actualiser', logoutBtn:'⎋ Déconnexion',
+    topbarRole:'Nhalabene', pillRole:'PRIVÉ', refreshBtn:'↻ Actualiser', logoutBtn:'⎋ Déconnexion',
     secDashboard:'Dashboard', secDb:'Base de Données', secAccess:'Contrôle Accès', secConfig:'Configuration', secExports:'Exports', secSystem:'Système',
     navOverview:"Vue d'ensemble", navReservas:'Réservations', navUpcoming:'Prochains Transferts', navNova:'Nouvelle Réservation',
     navAgencias:'Agences', navPrices:'Prix', navPermissions:'Permissions', navServices:'Services',
     navTemplates:'Modèles Email', navExportsItem:'Export PDF / Excel', navLogs:'Logs Système', navBackup:'Backup / Import'
   },
   ES:{
-    loginBadge:'👑 Consola', loginTitle:'🔐 Acceso Nhalabene', idLabel:'Identificador', passLabel:'Contraseña',
+    loginBadge:'👑 Nhalabene', loginTitle:'🔐 Acceso Nhalabene', idLabel:'Identificador', passLabel:'Contraseña',
     loginBtn:'Acceder', loginFooter:'Acceso restringido — Nhalabene',
     errEmpty:'Rellenar todos los campos.', errConn:'Error de conexión. Verifique API_URL.', errInvalid:'Credenciales incorrectas.',
-    topbarRole:'Consola', pillRole:'PRIVADO', refreshBtn:'↻ Actualizar', logoutBtn:'⎋ Salir',
+    topbarRole:'Nhalabene', pillRole:'PRIVADO', refreshBtn:'↻ Actualizar', logoutBtn:'⎋ Salir',
     secDashboard:'Dashboard', secDb:'Base de Datos', secAccess:'Control de Acceso', secConfig:'Configuración', secExports:'Exportaciones', secSystem:'Sistema',
     navOverview:'Resumen', navReservas:'Reservas', navUpcoming:'Próximas Transferencias', navNova:'Nueva Reserva',
     navAgencias:'Agencias', navPrices:'Precios', navPermissions:'Permisos', navServices:'Servicios',
