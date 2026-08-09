@@ -623,12 +623,10 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
 </style>
 <meta name="theme-color" content="#161B27">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="favicon.ico" type="image/x-icon" sizes="32x32">
-<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
-<link rel="icon" href="icon-32.png" type="image/png" sizes="32x32">
-<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="icon-180.png">
-<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.svg" type="image/svg+xml" sizes="192x192">
+<link rel="apple-touch-icon" href="icon-180.svg">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.svg">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Nhalabene">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -657,7 +655,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   </div>
   <div class="login-box">
     <div class="login-logo">
-      <div class="login-emblem"><img src="logo-login.png" alt="Nhalabene" width="160" height="160" decoding="async"></div>
+      <div class="login-emblem"><img src="logo-login.svg" alt="Nhalabene" width="160" height="160" decoding="async"></div>
       <div class="login-brand">Nhalabene</div>
       <div class="login-badge" id="lbl-login-badge">👑 Nhalabene</div>
     </div>
@@ -689,7 +687,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   <div class="topbar">
     <button type="button" class="btn-menu" id="btn-menu" onclick="toggleNav()" aria-label="Menu">☰</button>
     <div class="topbar-brand">
-      <div class="topbar-logo"><img src="logo-topbar.png" alt="Nhalabene" width="72" height="72" decoding="async"></div>
+      <div class="topbar-logo"><img src="logo-topbar.svg" alt="Nhalabene" width="72" height="72" decoding="async"></div>
       <div class="topbar-title" id="lbl-topbar-role">Nhalabene</div>
       <div class="topbar-pill" id="lbl-topbar-pill">PRIVÉ</div>
     </div>
@@ -1416,6 +1414,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         <div class="fg"><label>ID Agence *</label><input type="text" id="ag-id" placeholder="AGN002"></div>
         <div class="fg"><label>Statut</label><select id="ag-statut"><option value="actif">Actif</option><option value="inactif">Inactif</option></select></div>
         <div class="fg full"><label>Nom</label><input type="text" id="ag-nom"></div>
+        <div class="fg full"><label>Morada / adresse *</label><input type="text" id="ag-adresse" placeholder="Rua, nº, cidade…"></div>
         <div class="fg"><label>Email</label><input type="email" id="ag-email"></div>
         <div class="fg"><label>Email à l'attribution</label><select id="ag-email-notif"><option value="sim">Oui — notifier par email</option><option value="nao">Non — pas d'email auto</option></select></div>
         <div class="fg"><label>Palavra-passe atual (login Agência) *</label><input type="text" id="ag-pass" autocomplete="new-password"></div>
@@ -2743,6 +2742,7 @@ function openAgenceModal(id) {
   document.getElementById('ag-id').value       = a?.id || '';
   document.getElementById('ag-id').disabled    = !!a;
   document.getElementById('ag-nom').value      = a?.nom || '';
+  document.getElementById('ag-adresse').value  = a?.adresse || a?.morada || '';
   document.getElementById('ag-email').value    = a?.email || '';
   document.getElementById('ag-email-notif').value = (a?.emailNotifAtrib === 'nao') ? 'nao' : 'sim';
   document.getElementById('ag-pass').value     = a?.motDePasse || '';
@@ -2759,6 +2759,8 @@ async function doSaveAgencia() {
   const agencia = {
     id: document.getElementById('ag-id').value.trim(),
     nom: document.getElementById('ag-nom').value.trim(),
+    adresse: document.getElementById('ag-adresse').value.trim(),
+    morada: document.getElementById('ag-adresse').value.trim(),
     email: document.getElementById('ag-email').value.trim(),
     emailNotifAtrib: document.getElementById('ag-email-notif').value,
     motDePasse: document.getElementById('ag-pass').value.trim(),
@@ -2770,6 +2772,7 @@ async function doSaveAgencia() {
     emailRelayUrl: document.getElementById('ag-relay-url').value.trim()
   };
   if (!agencia.id) { msg('m-ag-msg', 'ID obligatoire', 'error'); return; }
+  if (!agencia.adresse) { msg('m-ag-msg', 'Morada / adresse obligatoire', 'error'); return; }
   try {
     const d = await api({ action: 'planb_saveAgencia', planbToken: S.token, agencia }, { timeoutMs: 55000 });
     if (d.success) { toast('✅ Agence sauvegardée', 'success'); closeModal('ov-ag'); loadAgencias(); }
