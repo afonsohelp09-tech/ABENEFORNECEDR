@@ -744,7 +744,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
       <button class="nav-item" id="nav-historique" onclick="showSection('historique')"><span class="nav-icon">🕘</span> <span id="lbl-nav-historique">Historique</span></button>
       <button class="nav-item" id="nav-upcoming" onclick="showSection('upcoming')"><span class="nav-icon">🗓</span> <span id="lbl-nav-upcoming">Próximas Transferências</span><span class="nav-badge gold" id="nb-upcoming" style="display:none">0</span></button>
       <button class="nav-item" id="nav-nova-reserva" onclick="showSection('nova-reserva')"><span class="nav-icon">➕</span> <span id="lbl-nav-nova">Nova reserva</span></button>
-      <button class="nav-item" id="nav-agencias" onclick="showSection('agencias')"><span class="nav-icon">🏢</span> <span id="lbl-nav-agencias">Agence</span></button>
+      <button class="nav-item" id="nav-agencias" onclick="showSection('agencias')"><span class="nav-icon">🏢</span> <span id="lbl-nav-agencias">Agences 1.0</span></button>
       <button class="nav-item" id="nav-prices" onclick="showSection('prices')"><span class="nav-icon">💰</span> <span id="lbl-nav-prices">Prix</span></button>
 
       <div class="nav-section" id="lbl-nav-sec-access">Contrôle Accès</div>
@@ -1015,26 +1015,43 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         </div>
       </div>
 
-      <!-- ══ AGENCE (organisation — pas les hôtels) ══ -->
+      <!-- ══ AGENCES 1.0 (créées par le Fournisseur) ══ -->
       <div class="section" id="section-agencias">
         <div class="section-header">
-          <div class="section-title"><span class="ico">🏢</span> Organisation Agence</div>
+          <div class="section-title"><span class="ico">🏢</span> Agences 1.0</div>
           <div class="section-actions">
+            <button class="btn btn-gold btn-sm" type="button" onclick="openOrgAgenceModal()">+ Nouvelle agence</button>
             <button class="btn btn-ghost btn-sm" onclick="loadAgencias()">↻</button>
           </div>
         </div>
         <div class="info-banner info" style="margin-bottom:12px">
           <span>ℹ️</span>
-          <span>Le fournisseur administre la <strong>fiche Agence</strong> (accès Portal Agence, bilan). Les <strong>hôtels</strong> et leurs permissions se gèrent uniquement dans le Portal Agence.</span>
+          <span>Créez des organisations <strong>Agence 1.0</strong> (feuille <code>ORG_AGENCES</code>). Chaque agence se connecte au portal générique avec son ID (ex. <code>AGN002</code>). Les hôtels créés depuis ce portal portent la colonne <code>ORG_ID</code>.</span>
+        </div>
+        <div class="c-card" style="margin-bottom:14px">
+          <div class="c-card-header"><div class="c-card-title">📋 Liste des agences</div></div>
+          <div class="c-card-body" style="padding:0">
+            <div class="tbl-scroll" id="org10-table-wrap" style="min-height:120px">
+              <div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header" style="margin-top:8px">
+          <div class="section-title" style="font-size:15px"><span class="ico">🏛️</span> Legacy — Agence Ruelas (brandé)</div>
+        </div>
+        <div class="info-banner info" style="margin-bottom:12px">
+          <span>ℹ️</span>
+          <span>Fiche de l’agence brandée (<code>AGENCE_ADMIN</code> / Portal <em>Agence/</em>). Conservée pour Ruelas ; les nouvelles agences utilisent Agence 1.0.</span>
         </div>
         <div class="stats-row" id="org-kpis" style="margin-bottom:14px">
-          <div class="mini-stat"><div class="mini-stat-val" id="org-hotels-scope">—</div><div class="mini-stat-lbl">Hôtels (Agence)</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="org-hotels-scope">—</div><div class="mini-stat-lbl">Hôtels (Ruelas)</div></div>
           <div class="mini-stat"><div class="mini-stat-val" id="org-hotels-pending" style="color:var(--warn)">—</div><div class="mini-stat-lbl">À céder</div></div>
           <div class="mini-stat"><div class="mini-stat-val" id="org-bilan-total">—</div><div class="mini-stat-lbl">Résas (bilan)</div></div>
           <div class="mini-stat"><div class="mini-stat-val" id="org-bilan-ca" style="color:var(--success)">—</div><div class="mini-stat-lbl">CA €</div></div>
         </div>
         <div class="c-card" style="margin-bottom:14px">
-          <div class="c-card-header"><div class="c-card-title">📋 Fiche organisation</div></div>
+          <div class="c-card-header"><div class="c-card-title">📋 Fiche organisation Ruelas</div></div>
           <div class="c-card-body">
             <div class="form-grid" id="org-form">
               <div class="fg"><label>Login Portal Agence</label><input type="text" id="org-login-id" disabled value="AGENCE_ADMIN"></div>
@@ -1043,7 +1060,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
               <div class="fg"><label>Email contact</label><input type="email" id="org-email"></div>
               <div class="fg"><label>Téléphone</label><input type="text" id="org-phone"></div>
               <div class="fg"><label>Ville</label><input type="text" id="org-city"></div>
-              <div class="fg"><label>Logo URL (futur Agence 1.0)</label><input type="url" id="org-logo" placeholder="https://…"></div>
+              <div class="fg"><label>Logo URL</label><input type="url" id="org-logo" placeholder="https://…"></div>
               <div class="fg full"><label>Notes</label><textarea id="org-notes" rows="2" style="width:100%;min-height:56px"></textarea></div>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
@@ -1055,7 +1072,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         </div>
         <div class="c-card">
           <div class="c-card-header">
-            <div class="c-card-title">🏨 Hôtels (lecture seule)</div>
+            <div class="c-card-title">🏨 Hôtels Ruelas (lecture seule)</div>
             <button class="btn btn-ghost btn-sm" type="button" id="btn-ceder-all" onclick="cederAllHotelsAgence()" style="display:none">↗ Céder tous à l'Agence</button>
           </div>
           <div class="c-card-body" style="padding:0">
@@ -1425,6 +1442,34 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
     </div>
     <div class="modal-body"><div class="hist-list" id="adm-hist-list"></div></div>
     <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('ov-res-hist')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL ORG AGENCE 1.0 ═══ -->
+<div class="overlay" id="ov-org10" onclick="closeOv('ov-org10',event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-title" id="m-org10-title">+ Nouvelle agence</div></div>
+      <button class="modal-close" onclick="closeModal('ov-org10')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-msg" id="m-org10-msg"></div>
+      <div class="form-grid">
+        <div class="fg"><label>ID *</label><input type="text" id="org10-id" placeholder="AGN002" autocomplete="off"></div>
+        <div class="fg"><label>Statut</label><select id="org10-statut"><option value="actif">Actif</option><option value="inactif">Inactif</option></select></div>
+        <div class="fg full"><label>Nom *</label><input type="text" id="org10-nom" placeholder="Agence Exemple"></div>
+        <div class="fg"><label>Email</label><input type="email" id="org10-email"></div>
+        <div class="fg"><label>Téléphone</label><input type="text" id="org10-phone"></div>
+        <div class="fg"><label>Ville</label><input type="text" id="org10-city"></div>
+        <div class="fg full"><label>Logo URL</label><input type="url" id="org10-logo" placeholder="https://…"></div>
+        <div class="fg full"><label>Mot de passe <span id="org10-pass-hint">(obligatoire à la création, min. 8)</span></label><input type="password" id="org10-pass" autocomplete="new-password" placeholder="••••••••"></div>
+        <div class="fg full"><label>Notes</label><textarea id="org10-notes" rows="2" style="width:100%;min-height:56px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ov-org10')">Annuler</button>
+      <button class="btn btn-gold" onclick="doSaveOrgAgenceRow()">💾 Enregistrer</button>
+    </div>
   </div>
 </div>
 
@@ -2773,18 +2818,52 @@ async function deleteReserva() {
 }
 
 // ─────────────────────────────────────────────
-// ORGANISATION AGENCE (Fournisseur — pas les hôtels)
+// ORGANISATION AGENCE (Fournisseur — Agence 1.0 + legacy Ruelas)
 // ─────────────────────────────────────────────
 async function loadAgencias() {
   const wrap = document.getElementById('ag-table-wrap');
+  const wrap10 = document.getElementById('org10-table-wrap');
   if (wrap) wrap.innerHTML = '<div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>';
+  if (wrap10) wrap10.innerHTML = '<div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>';
   try {
-    const [dOrg, dHot, dBil] = await Promise.all([
+    const [dOrg, dHot, dBil, dList] = await Promise.all([
       api({ action: 'planb_getOrgAgence', planbToken: S.token }),
       api({ action: 'planb_getHotelsReadonly', planbToken: S.token }),
-      api({ action: 'planb_getBilanAgence', planbToken: S.token })
+      api({ action: 'planb_getBilanAgence', planbToken: S.token }),
+      api({ action: 'planb_listOrgAgences', planbToken: S.token })
     ]);
-    if (dOrg.sessionExpired || dHot.sessionExpired || dBil.sessionExpired) { doLogout(); return; }
+    if (dOrg.sessionExpired || dHot.sessionExpired || dBil.sessionExpired || dList.sessionExpired) { doLogout(); return; }
+
+    // ── Liste Agence 1.0 ──
+    S.orgAgences = (dList.success ? dList.agences : []) || [];
+    if (wrap10) {
+      if (!dList.success) {
+        wrap10.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">${escHtml(dList.error || 'Erreur')}</div></div>`;
+      } else if (!S.orgAgences.length) {
+        wrap10.innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Aucune agence 1.0</div><div class="empty-sub">Cliquez sur « + Nouvelle agence » pour créer la première (ex. AGN002).</div></div>';
+      } else {
+        let html10 = `<table><thead><tr>
+          <th>ID</th><th>Nom</th><th>Email</th><th>Ville</th><th>Statut</th><th>Hôtels</th><th></th>
+        </tr></thead><tbody>`;
+        for (const a of S.orgAgences) {
+          html10 += `<tr>
+            <td class="mono">${escHtml(a.id)}</td>
+            <td class="bold">${escHtml(a.nom || '—')}</td>
+            <td>${escHtml(a.email || '—')}</td>
+            <td>${escHtml(a.city || '—')}</td>
+            <td>${badge(a.statut || 'actif')}</td>
+            <td>${a.hotelsCount || 0}</td>
+            <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+              <button class="btn btn-ghost btn-sm" onclick="openOrgAgenceModal('${escHtml(a.id)}')">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteOrgAgenceRow('${escHtml(a.id)}')">🗑</button>
+            </div></td>
+          </tr>`;
+        }
+        html10 += '</tbody></table>';
+        wrap10.innerHTML = html10;
+      }
+    }
+
     if (!dOrg.success) { toast('❌ ' + (dOrg.error || 'Erreur org'), 'error'); return; }
 
     const org = dOrg.org || {};
@@ -2845,7 +2924,79 @@ async function loadAgencias() {
     wrap.innerHTML = html;
   } catch (e) {
     if (wrap) wrap.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">${e.message}</div></div>`;
+    if (wrap10) wrap10.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">${e.message}</div></div>`;
   }
+}
+
+function nextOrgAgenceId_() {
+  const ids = (S.orgAgences || []).map(a => String(a.id || '').toUpperCase());
+  let n = 2;
+  while (ids.indexOf('AGN' + String(n).padStart(3, '0')) !== -1) n++;
+  return 'AGN' + String(n).padStart(3, '0');
+}
+
+function openOrgAgenceModal(id) {
+  const isEdit = !!id;
+  const a = isEdit ? (S.orgAgences || []).find(x => x.id === id) : null;
+  document.getElementById('m-org10-title').textContent = isEdit ? ('✏️ ' + id) : '+ Nouvelle agence';
+  document.getElementById('m-org10-msg').className = 'modal-msg';
+  document.getElementById('m-org10-msg').textContent = '';
+  const idEl = document.getElementById('org10-id');
+  idEl.value = isEdit ? id : nextOrgAgenceId_();
+  idEl.disabled = isEdit;
+  document.getElementById('org10-pass-hint').textContent = isEdit
+    ? '(laisser vide pour ne pas changer)'
+    : '(obligatoire à la création, min. 8)';
+  document.getElementById('org10-statut').value = (a && a.statut) || 'actif';
+  document.getElementById('org10-nom').value = (a && a.nom) || '';
+  document.getElementById('org10-email').value = (a && a.email) || '';
+  document.getElementById('org10-phone').value = (a && a.phone) || '';
+  document.getElementById('org10-city').value = (a && a.city) || '';
+  document.getElementById('org10-logo').value = (a && a.logoUrl) || '';
+  document.getElementById('org10-pass').value = '';
+  document.getElementById('org10-notes').value = (a && a.notes) || '';
+  S.curOrg10Edit = isEdit;
+  openModal('ov-org10');
+}
+
+async function doSaveOrgAgenceRow() {
+  const agence = {
+    id: document.getElementById('org10-id')?.value.trim().toUpperCase(),
+    nom: document.getElementById('org10-nom')?.value.trim(),
+    email: document.getElementById('org10-email')?.value.trim(),
+    phone: document.getElementById('org10-phone')?.value.trim(),
+    city: document.getElementById('org10-city')?.value.trim(),
+    statut: document.getElementById('org10-statut')?.value,
+    logoUrl: document.getElementById('org10-logo')?.value.trim(),
+    notes: document.getElementById('org10-notes')?.value.trim(),
+    motDePasse: document.getElementById('org10-pass')?.value
+  };
+  if (!agence.id || !agence.nom) { msg('m-org10-msg', 'ID et nom obligatoires', 'error'); return; }
+  if (!S.curOrg10Edit && (!agence.motDePasse || agence.motDePasse.length < 8)) {
+    msg('m-org10-msg', 'Mot de passe min. 8 caractères', 'error'); return;
+  }
+  try {
+    const d = await api({ action: 'planb_saveOrgAgenceRow', planbToken: S.token, agence });
+    if (d.success) {
+      closeModal('ov-org10');
+      toast(d.action === 'created' ? '✅ Agence créée' : '✅ Agence mise à jour', 'success');
+      loadAgencias();
+    } else {
+      if (d.sessionExpired) doLogout();
+      msg('m-org10-msg', '❌ ' + (d.error || 'Erreur'), 'error');
+    }
+  } catch (e) { msg('m-org10-msg', '❌ ' + e.message, 'error'); }
+}
+
+async function deleteOrgAgenceRow(id) {
+  if (!id) return;
+  confirmDanger('Supprimer agence', `Supprimer ${id} de ORG_AGENCES ? Les hôtels liés (ORG_ID) ne sont pas effacés automatiquement.`, async () => {
+    try {
+      const d = await api({ action: 'planb_deleteOrgAgence', planbToken: S.token, id });
+      if (d.success) { toast('🗑 Agence supprimée', 'success'); loadAgencias(); }
+      else { if (d.sessionExpired) doLogout(); toast('❌ ' + (d.error || 'Erreur'), 'error'); }
+    } catch (e) { toast('❌ ' + e.message, 'error'); }
+  });
 }
 
 async function doSaveOrgAgence() {
