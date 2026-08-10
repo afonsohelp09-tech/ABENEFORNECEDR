@@ -744,11 +744,11 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
       <button class="nav-item" id="nav-historique" onclick="showSection('historique')"><span class="nav-icon">🕘</span> <span id="lbl-nav-historique">Historique</span></button>
       <button class="nav-item" id="nav-upcoming" onclick="showSection('upcoming')"><span class="nav-icon">🗓</span> <span id="lbl-nav-upcoming">Próximas Transferências</span><span class="nav-badge gold" id="nb-upcoming" style="display:none">0</span></button>
       <button class="nav-item" id="nav-nova-reserva" onclick="showSection('nova-reserva')"><span class="nav-icon">➕</span> <span id="lbl-nav-nova">Nova reserva</span></button>
-      <button class="nav-item" id="nav-agencias" onclick="showSection('agencias')"><span class="nav-icon">🏢</span> <span id="lbl-nav-agencias">Agences</span></button>
+      <button class="nav-item" id="nav-agencias" onclick="showSection('agencias')"><span class="nav-icon">🏢</span> <span id="lbl-nav-agencias">Agence</span></button>
       <button class="nav-item" id="nav-prices" onclick="showSection('prices')"><span class="nav-icon">💰</span> <span id="lbl-nav-prices">Prix</span></button>
 
       <div class="nav-section" id="lbl-nav-sec-access">Contrôle Accès</div>
-      <button class="nav-item" id="nav-permissions" onclick="showSection('permissions')"><span class="nav-icon">🔐</span> <span id="lbl-nav-permissions">Permissions</span><span class="nav-badge gold" id="nb-bloque" style="display:none">!</span></button>
+      <button class="nav-item" id="nav-permissions" onclick="showSection('permissions')" style="display:none" aria-hidden="true"><span class="nav-icon">🔐</span> <span id="lbl-nav-permissions">Permissions</span></button>
       <button class="nav-item" id="nav-services" onclick="showSection('services')"><span class="nav-icon">⚙️</span> <span id="lbl-nav-services">Services</span></button>
 
       <div class="nav-section" id="lbl-nav-sec-config">Configuration</div>
@@ -791,10 +791,9 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
                 <button class="btn btn-gold" onclick="showSection('reservas')">📋 Toutes les réservations</button>
                 <button class="btn btn-purple" onclick="showSection('upcoming')">🗓 Próximas Transferências</button>
                 <button class="btn btn-gold" onclick="showSection('nova-reserva')">➕ Nova reserva (complète)</button>
-                <button class="btn btn-ghost" onclick="showSection('permissions')">🔐 Gérer les permissions</button>
+                <button class="btn btn-ghost" onclick="showSection('agencias')">🏢 Fiche Agence Ruelas</button>
                 <button class="btn btn-ghost" onclick="showSection('services')">⚙️ État des services</button>
                 <button class="btn btn-ghost" onclick="showSection('exports')">📥 Exports PDF / Excel</button>
-                <button class="btn btn-ghost" onclick="showSection('agencias')">🏢 Gérer les agences</button>
                 <button class="btn btn-ghost" onclick="showSection('prices')">💰 Modifier les prix</button>
                 <button class="btn btn-ghost" onclick="showSection('logs')">📁 Consulter les logs</button>
               </div>
@@ -809,7 +808,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
                   <div class="sys-info-item"><span class="sys-info-key">🕐 Session</span><span class="sys-info-val" style="color:var(--success)">Active</span></div>
                   <div class="sys-info-item"><span class="sys-info-key">🏷️ Version</span><span class="sys-info-val">Master v1.0</span></div>
                   <div class="sys-info-item"><span class="sys-info-key">👤 Compte</span><span class="sys-info-val" id="ov-user">—</span></div>
-                  <div class="sys-info-item"><span class="sys-info-key">🔒 Bloqués</span><span class="sys-info-val" id="ov-bloque" style="color:var(--danger)">—</span></div>
+                  <div class="sys-info-item"><span class="sys-info-key">🏨 Hôtels</span><span class="sys-info-val" id="ov-bloque">—</span></div>
                   <div class="sys-info-item"><span class="sys-info-key">⚙️ Services</span><span class="sys-info-val" id="ov-services">—</span></div>
                 </div>
               </div>
@@ -1016,19 +1015,53 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         </div>
       </div>
 
-      <!-- ══ AGENCES ══ -->
+      <!-- ══ AGENCE (organisation — pas les hôtels) ══ -->
       <div class="section" id="section-agencias">
         <div class="section-header">
-          <div class="section-title"><span class="ico">🏢</span> Gestão de Agências</div>
+          <div class="section-title"><span class="ico">🏢</span> Organisation Agence</div>
           <div class="section-actions">
-            <button class="btn btn-gold btn-sm" onclick="openAgenceModal(null)">+ Nouvelle agence</button>
             <button class="btn btn-ghost btn-sm" onclick="loadAgencias()">↻</button>
           </div>
         </div>
-        <div id="ag-login-hint" style="padding:10px 16px;font-size:12px;color:var(--info,#3b82f6);background:rgba(59,130,246,.08);border-bottom:1px solid rgba(59,130,246,.25);line-height:1.45">🔐 <strong>Login atual da Agência</strong> (ID + palavra-passe) — sempre visível abaixo, mesmo depois de alterado. Definido apenas nesta consola. O Portal Agence não pode mudar a própria palavra-passe.</div>
-        <div class="tbl-wrap">
-          <div class="tbl-scroll" id="ag-table-wrap">
-            <div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>
+        <div class="info-banner info" style="margin-bottom:12px">
+          <span>ℹ️</span>
+          <span>Le fournisseur administre la <strong>fiche Agence</strong> (accès Portal Agence, bilan). Les <strong>hôtels</strong> et leurs permissions se gèrent uniquement dans le Portal Agence.</span>
+        </div>
+        <div class="stats-row" id="org-kpis" style="margin-bottom:14px">
+          <div class="mini-stat"><div class="mini-stat-val" id="org-hotels-scope">—</div><div class="mini-stat-lbl">Hôtels (Agence)</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="org-hotels-pending" style="color:var(--warn)">—</div><div class="mini-stat-lbl">À céder</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="org-bilan-total">—</div><div class="mini-stat-lbl">Résas (bilan)</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="org-bilan-ca" style="color:var(--success)">—</div><div class="mini-stat-lbl">CA €</div></div>
+        </div>
+        <div class="c-card" style="margin-bottom:14px">
+          <div class="c-card-header"><div class="c-card-title">📋 Fiche organisation</div></div>
+          <div class="c-card-body">
+            <div class="form-grid" id="org-form">
+              <div class="fg"><label>Login Portal Agence</label><input type="text" id="org-login-id" disabled value="AGENCE_ADMIN"></div>
+              <div class="fg"><label>Statut</label><select id="org-statut"><option value="actif">Actif</option><option value="inactif">Inactif</option></select></div>
+              <div class="fg full"><label>Nom *</label><input type="text" id="org-nom" placeholder="Agence Ruelas"></div>
+              <div class="fg"><label>Email contact</label><input type="email" id="org-email"></div>
+              <div class="fg"><label>Téléphone</label><input type="text" id="org-phone"></div>
+              <div class="fg"><label>Ville</label><input type="text" id="org-city"></div>
+              <div class="fg"><label>Logo URL (futur Agence 1.0)</label><input type="url" id="org-logo" placeholder="https://…"></div>
+              <div class="fg full"><label>Notes</label><textarea id="org-notes" rows="2" style="width:100%;min-height:56px"></textarea></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+              <button class="btn btn-gold" type="button" onclick="doSaveOrgAgence()">💾 Enregistrer la fiche</button>
+              <button class="btn btn-warn" type="button" onclick="doResetAgenceAdminPass()">🔑 Reset MDP AGENCE_ADMIN</button>
+            </div>
+            <div class="modal-msg" id="org-msg" style="margin-top:10px"></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-header">
+            <div class="c-card-title">🏨 Hôtels (lecture seule)</div>
+            <button class="btn btn-ghost btn-sm" type="button" id="btn-ceder-all" onclick="cederAllHotelsAgence()" style="display:none">↗ Céder tous à l'Agence</button>
+          </div>
+          <div class="c-card-body" style="padding:0">
+            <div class="tbl-scroll" id="ag-table-wrap" style="min-height:120px">
+              <div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1053,33 +1086,11 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         </div>
       </div>
 
-      <!-- ══ PERMISSIONS ══ -->
-      <div class="section" id="section-permissions">
-        <div class="section-header">
-          <div class="section-title"><span class="ico">🔐</span> Permissions & Accès</div>
-          <div class="section-actions">
-            <button class="btn btn-danger btn-sm" onclick="blockAllLogins()">🚫 Bloquer tout</button>
-            <button class="btn btn-success btn-sm" onclick="unblockAllLogins()">✅ Débloquer tout</button>
-            <button class="btn btn-ghost btn-sm" onclick="loadPermissions()">↻</button>
-          </div>
-        </div>
-
+      <!-- ══ PERMISSIONS (retirées — gérées par Portal Agence) ══ -->
+      <div class="section" id="section-permissions" style="display:none" aria-hidden="true">
         <div class="info-banner gold">
           <span>👑</span>
-          <span>Seul le compte Master peut modifier les permissions. Les modifications sont appliquées immédiatement et enregistrées dans les logs.</span>
-        </div>
-
-        <div class="tbl-wrap perm-table">
-          <div class="tbl-toolbar" style="gap:16px">
-            <span style="font-size:11px;color:var(--ts)">Permissions par agence :</span>
-            <span style="font-size:11px;color:var(--ts)">🟢 Actif &nbsp;·&nbsp; 🔴 Bloqué &nbsp;·&nbsp; ☑ Permission accordée &nbsp;·&nbsp; ☐ Permission refusée</span>
-          </div>
-          <div class="tbl-scroll" id="perm-table-wrap">
-            <div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>
-          </div>
-          <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
-            <button class="btn btn-gold" onclick="saveAllPermissions()">💾 Sauvegarder toutes les permissions</button>
-          </div>
+          <span>Les permissions hôtels sont gérées uniquement dans le <strong>Portal Agence</strong> (Parametrizar hotel).</span>
         </div>
       </div>
 
@@ -1899,15 +1910,11 @@ async function loadOverview() {
       if (nb) { nb.textContent = s.pendentes || 0; nb.className = 'nav-badge' + (s.pendentes > 0 ? '' : ' green'); }
     }
   } catch (e) {}
-  // Load permissions summary for overview
+  // Compteur hôtels (lecture org)
   try {
-    const dp = await api({ action: 'planb_getPermissions', planbToken: S.token });
-    if (dp.success) {
-      const blocked = Object.values(dp.permissions || {}).filter(p => p.loginBloque).length;
-      document.getElementById('ov-bloque').textContent = blocked > 0 ? `${blocked} bloqué(s)` : '0 — Tous actifs';
-      const bEl = document.getElementById('nb-bloque');
-      if (bEl) { bEl.style.display = blocked > 0 ? 'inline' : 'none'; bEl.textContent = blocked; }
-    }
+    const dOrg = await api({ action: 'planb_getOrgAgence', planbToken: S.token });
+    const ovB = document.getElementById('ov-bloque');
+    if (ovB && dOrg.success) ovB.textContent = `${dOrg.hotelsInScope ?? 0} / ${dOrg.hotelsTotal ?? 0}`;
   } catch (e) {}
   // Load services summary
   try {
@@ -2766,117 +2773,143 @@ async function deleteReserva() {
 }
 
 // ─────────────────────────────────────────────
-// AGENCES
+// ORGANISATION AGENCE (Fournisseur — pas les hôtels)
 // ─────────────────────────────────────────────
 async function loadAgencias() {
-  document.getElementById('ag-table-wrap').innerHTML = '<div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>';
+  const wrap = document.getElementById('ag-table-wrap');
+  if (wrap) wrap.innerHTML = '<div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>';
   try {
-    const d = await api({ action: 'planb_getAgencias', planbToken: S.token });
-    if (!d.success) { if (d.sessionExpired) doLogout(); return; }
-    S.agencias = d.agencias || [];
-    if (!S.agencias.length) { document.getElementById('ag-table-wrap').innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Aucune agence</div></div>'; return; }
+    const [dOrg, dHot, dBil] = await Promise.all([
+      api({ action: 'planb_getOrgAgence', planbToken: S.token }),
+      api({ action: 'planb_getHotelsReadonly', planbToken: S.token }),
+      api({ action: 'planb_getBilanAgence', planbToken: S.token })
+    ]);
+    if (dOrg.sessionExpired || dHot.sessionExpired || dBil.sessionExpired) { doLogout(); return; }
+    if (!dOrg.success) { toast('❌ ' + (dOrg.error || 'Erreur org'), 'error'); return; }
 
+    const org = dOrg.org || {};
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+    set('org-login-id', dOrg.loginId || 'AGENCE_ADMIN');
+    set('org-nom', org.nom);
+    set('org-email', org.email);
+    set('org-phone', org.phone);
+    set('org-city', org.city);
+    set('org-logo', org.logoUrl);
+    set('org-notes', org.notes);
+    const st = document.getElementById('org-statut');
+    if (st) st.value = org.statut || 'actif';
+
+    const hs = document.getElementById('org-hotels-scope');
+    const hp = document.getElementById('org-hotels-pending');
+    if (hs) hs.textContent = dOrg.hotelsInScope ?? '—';
+    if (hp) hp.textContent = dOrg.hotelsPendingCession ?? '—';
+
+    if (dBil.success && dBil.bilan) {
+      const b = dBil.bilan;
+      const bt = document.getElementById('org-bilan-total');
+      const bc = document.getElementById('org-bilan-ca');
+      if (bt) bt.textContent = b.total ?? 0;
+      if (bc) bc.textContent = (b.totalCA != null ? Number(b.totalCA).toFixed(0) : '0') + '€';
+    }
+
+    const pending = Number(dOrg.hotelsPendingCession || 0);
+    const btnCeder = document.getElementById('btn-ceder-all');
+    if (btnCeder) btnCeder.style.display = pending > 0 ? 'inline-flex' : 'none';
+
+    S.hotelsReadonly = (dHot.success ? dHot.hotels : []) || [];
+    if (!wrap) return;
+    if (!S.hotelsReadonly.length) {
+      wrap.innerHTML = '<div class="empty"><div class="empty-icon">🏨</div><div class="empty-title">Aucun hôtel</div><div class="empty-sub">Les hôtels sont créés depuis le Portal Agence.</div></div>';
+      return;
+    }
     let html = `<table><thead><tr>
-      <th>ID (login)</th><th>Nome</th><th>Email</th><th>Palavra-passe atual</th><th>Método</th><th>Instance</th><th>Statut</th><th>Actions</th>
+      <th>ID</th><th>Nome</th><th>Email</th><th>Statut</th><th>Créé par</th><th>Périmètre</th><th></th>
     </tr></thead><tbody>`;
-
-    for (const a of S.agencias) {
-      const isAdmin = ['HOTEL_ADMIN', 'PLANB_ADMIN', 'MASTER_ADMIN'].includes(a.id);
-      const hasApi = !!(a.apiUrl || a.API_URL);
+    for (const h of S.hotelsReadonly) {
+      const scopeLbl = h.inAgenceScope
+        ? '<span style="color:var(--success)">● Agence</span>'
+        : '<span style="color:var(--warn)">○ À céder</span>';
       html += `<tr>
-        <td class="mono">${a.id}</td>
-        <td class="bold">${a.nom}</td>
-        <td>${a.email || '—'}</td>
-        <td style="font-family:var(--mono);font-size:11px">${isAdmin ? '<span style="color:var(--ts)">— (config)</span>' : a.motDePasse}</td>
-        <td>${a.methodePaiement || '—'}</td>
-        <td style="font-size:11px">${hasApi ? '<span style="color:var(--success)">● API</span>' : '<span style="color:var(--ts)">○ local</span>'}</td>
-        <td>${isAdmin ? badge('master') : badge(a.statut)}</td>
-        <td><div style="display:flex;gap:3px">
-          <button class="btn btn-warn btn-sm" onclick="openAgenceModal('${a.id}')">✏️</button>
-          ${!isAdmin ? `<button class="btn btn-danger btn-sm" onclick="deleteAgence('${a.id}')">🗑</button>` : ''}
-        </div></td>
+        <td class="mono">${h.id}</td>
+        <td class="bold">${h.nom || '—'}</td>
+        <td>${h.email || '—'}</td>
+        <td>${badge(h.statut || 'actif')}</td>
+        <td style="font-size:11px">${h.creePar || '—'}</td>
+        <td>${scopeLbl}</td>
+        <td>${h.pendingCession
+          ? `<button class="btn btn-ghost btn-sm" onclick="cederOneHotel('${h.id}')">↗ Céder</button>`
+          : '—'}</td>
       </tr>`;
     }
-    html += `</tbody></table>`;
-    document.getElementById('ag-table-wrap').innerHTML = html;
-  } catch (e) { document.getElementById('ag-table-wrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">${e.message}</div></div>`; }
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+  } catch (e) {
+    if (wrap) wrap.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">${e.message}</div></div>`;
+  }
 }
 
-function openAgenceModal(id) {
-  const a = id ? S.agencias.find(x => x.id === id) : null;
-  document.getElementById('m-ag-title').textContent = a ? '✏️ Éditer — ' + a.id : '+ Nouvelle Agence';
-  document.getElementById('m-ag-msg').className = 'modal-msg';
-  document.getElementById('ag-id').value       = a?.id || '';
-  document.getElementById('ag-id').disabled    = !!a;
-  document.getElementById('ag-nom').value      = a?.nom || '';
-  document.getElementById('ag-adresse').value  = a?.adresse || a?.morada || '';
-  document.getElementById('ag-email').value    = a?.email || '';
-  document.getElementById('ag-email-notif').value = (a?.emailNotifAtrib === 'nao') ? 'nao' : 'sim';
-  document.getElementById('ag-pass').value     = a?.motDePasse || '';
-  document.getElementById('ag-statut').value   = a?.statut || 'actif';
-  document.getElementById('ag-meth').value     = a?.methodePaiement || 'virement';
-  document.getElementById('ag-api-url').value  = a?.apiUrl || '';
-  document.getElementById('ag-sheet-url').value = a?.sheetUrl || '';
-  document.getElementById('ag-sheet-id').value = a?.sheetId || '';
-  document.getElementById('ag-relay-url').value = a?.emailRelayUrl || '';
-  openModal('ov-ag');
-}
-
-async function doSaveAgencia() {
-  const agencia = {
-    id: document.getElementById('ag-id').value.trim(),
-    nom: document.getElementById('ag-nom').value.trim(),
-    adresse: document.getElementById('ag-adresse').value.trim(),
-    morada: document.getElementById('ag-adresse').value.trim(),
-    email: document.getElementById('ag-email').value.trim(),
-    emailNotifAtrib: document.getElementById('ag-email-notif').value,
-    motDePasse: document.getElementById('ag-pass').value.trim(),
-    statut: document.getElementById('ag-statut').value,
-    methodePaiement: document.getElementById('ag-meth').value,
-    apiUrl: document.getElementById('ag-api-url').value.trim(),
-    sheetUrl: document.getElementById('ag-sheet-url').value.trim(),
-    sheetId: document.getElementById('ag-sheet-id').value.trim(),
-    emailRelayUrl: document.getElementById('ag-relay-url').value.trim()
+async function doSaveOrgAgence() {
+  const org = {
+    nom: document.getElementById('org-nom')?.value.trim(),
+    email: document.getElementById('org-email')?.value.trim(),
+    phone: document.getElementById('org-phone')?.value.trim(),
+    city: document.getElementById('org-city')?.value.trim(),
+    statut: document.getElementById('org-statut')?.value,
+    logoUrl: document.getElementById('org-logo')?.value.trim(),
+    notes: document.getElementById('org-notes')?.value.trim()
   };
-  if (!agencia.id) { msg('m-ag-msg', 'ID obligatoire', 'error'); return; }
-  if (!agencia.adresse) { msg('m-ag-msg', 'Morada / adresse obligatoire', 'error'); return; }
+  if (!org.nom) { msg('org-msg', 'Nom obligatoire', 'error'); return; }
   try {
-    const d = await api({ action: 'planb_saveAgencia', planbToken: S.token, agencia }, { timeoutMs: 55000 });
-    if (d.success) { toast('✅ Agence sauvegardée', 'success'); closeModal('ov-ag'); loadAgencias(); }
-    else { if (d.sessionExpired) doLogout(); msg('m-ag-msg', '❌ ' + d.error, 'error'); }
-  } catch (e) { msg('m-ag-msg', '❌ ' + e.message, 'error'); }
+    const d = await api({ action: 'planb_saveOrgAgence', planbToken: S.token, org });
+    if (d.success) { msg('org-msg', '✅ Fiche enregistrée', 'success'); toast('✅ Organisation Agence sauvegardée', 'success'); }
+    else { if (d.sessionExpired) doLogout(); msg('org-msg', '❌ ' + (d.error || 'Erreur'), 'error'); }
+  } catch (e) { msg('org-msg', '❌ ' + e.message, 'error'); }
 }
 
-async function pingAgenceInstance() {
-  const id = document.getElementById('ag-id').value.trim();
-  const apiUrl = document.getElementById('ag-api-url').value.trim();
-  if (!apiUrl) { toast('API URL requise pour Ping', 'warn'); return; }
+async function doResetAgenceAdminPass() {
+  const nova = prompt('Nouveau mot de passe Portal Agence (AGENCE_ADMIN) — min. 8 caractères :');
+  if (nova == null) return;
+  if (String(nova).trim().length < 8) { toast('Minimum 8 caractères', 'warn'); return; }
   try {
-    const d = await api({ action: 'planb_pingAgence', planbToken: S.token, agencyId: id, apiUrl: apiUrl });
-    if (d.success) toast('✅ Ping OK' + (d.version ? ' · v' + d.version : ''), 'success');
-    else toast('❌ ' + (d.error || 'Ping échoué'), 'error');
+    const d = await api({ action: 'planb_resetAgenceAdminPass', planbToken: S.token, novaSenha: String(nova).trim() });
+    if (d.success) toast('🔑 Mot de passe AGENCE_ADMIN mis à jour', 'success');
+    else { if (d.sessionExpired) doLogout(); toast('❌ ' + (d.error || 'Erreur'), 'error'); }
   } catch (e) { toast('❌ ' + e.message, 'error'); }
 }
 
-async function pushAgenceConfig() {
-  const id = document.getElementById('ag-id').value.trim();
-  if (!id) { toast('Enregistrer l’agence d’abord', 'warn'); return; }
-  try {
-    const d = await api({ action: 'planb_pousserConfig', planbToken: S.token, agencyId: id });
-    if (d.success) toast('✅ Config poussée', 'success');
-    else toast('❌ ' + (d.error || 'Push échoué'), 'error');
-  } catch (e) { toast('❌ ' + e.message, 'error'); }
-}
-
-async function deleteAgence(id) {
-  confirmDanger('Supprimer l\'agence', `Supprimer définitivement l'agence ${id} et tous ses accès ?`, async () => {
+async function cederOneHotel(id) {
+  if (!id) return;
+  confirmDanger('Céder à l\'Agence', `Transférer ${id} dans le périmètre Portal Agence (CREE_PAR → HOTEL_ADMIN) ?`, async () => {
     try {
-      const d = await api({ action: 'planb_deleteAgencia', planbToken: S.token, agencyId: id });
-      if (d.success) { toast('🗑 Agence supprimée', 'warn'); loadAgencias(); }
-      else { if (d.sessionExpired) doLogout(); toast('❌ ' + d.error, 'error'); }
+      const d = await api({ action: 'planb_cederHotelsAgence', planbToken: S.token, agencyId: id });
+      if (d.success) { toast('↗ Hôtel cédé à l\'Agence', 'success'); loadAgencias(); }
+      else { if (d.sessionExpired) doLogout(); toast('❌ ' + (d.error || 'Erreur'), 'error'); }
     } catch (e) { toast('❌ ' + e.message, 'error'); }
   });
 }
+
+async function cederAllHotelsAgence() {
+  confirmDanger('Céder tous', 'Tous les hôtels créés par le fournisseur (CREE_PAR=PLANB_ADMIN) passeront sous le Portal Agence. Continuer ?', async () => {
+    try {
+      const d = await api({ action: 'planb_cederHotelsAgence', planbToken: S.token, all: true });
+      if (d.success) { toast(`↗ ${d.count || 0} hôtel(s) cédé(s)`, 'success'); loadAgencias(); }
+      else { if (d.sessionExpired) doLogout(); toast('❌ ' + (d.error || 'Erreur'), 'error'); }
+    } catch (e) { toast('❌ ' + e.message, 'error'); }
+  });
+}
+
+// Anciennes actions hôtel depuis Fournisseur — désactivées (API refuse)
+function openAgenceModal() {
+  toast('Les hôtels se créent dans le Portal Agence (Gestão de Hotéis).', 'warn');
+}
+async function doSaveAgencia() {
+  toast('Action désactivée côté fournisseur. Utilisez le Portal Agence.', 'warn');
+}
+async function deleteAgence() {
+  toast('Suppression hôtel désactivée côté fournisseur.', 'warn');
+}
+async function pingAgenceInstance() { toast('Ping instance : hors scope fiche org.', 'warn'); }
+async function pushAgenceConfig() { toast('Push config : hors scope fiche org.', 'warn'); }
 
 // ─────────────────────────────────────────────
 // PRIX
@@ -2999,133 +3032,24 @@ function deletePriceAt(idx) {
 }
 
 // ─────────────────────────────────────────────
-// PERMISSIONS
+// PERMISSIONS — retirées (Portal Agence uniquement)
 // ─────────────────────────────────────────────
 async function loadPermissions() {
-  document.getElementById('perm-table-wrap').innerHTML = '<div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>';
-  try {
-    // Load agencies + permissions together
-    const [da, dp] = await Promise.all([
-      api({ action: 'planb_getAgencias', planbToken: S.token }),
-      api({ action: 'planb_getPermissions', planbToken: S.token })
-    ]);
-    if (!da.success) { if (da.sessionExpired) doLogout(); return; }
-    S.agencias   = da.agencias || [];
-    S.permissions = (dp.success ? dp.permissions : {}) || {};
-
-    const agencies = S.agencias.filter(a => !['HOTEL_ADMIN', 'PLANB_ADMIN', 'MASTER_ADMIN'].includes(a.id));
-    if (!agencies.length) {
-      document.getElementById('perm-table-wrap').innerHTML = '<div class="empty"><div class="empty-icon">🔐</div><div class="empty-title">Aucune agence à gérer</div></div>';
-      return;
-    }
-
-    let html = `<table>
-      <thead><tr>
-        <th>ID</th><th>Nom</th><th>Statut Compte</th>
-        <th style="text-align:center">Login</th>
-        <th style="text-align:center">Créer</th>
-        <th style="text-align:center">Modifier</th>
-        <th style="text-align:center">Annuler</th>
-        <th style="text-align:center">Voir Prix</th>
-        <th>Actions</th>
-      </tr></thead><tbody>`;
-
-    for (const a of agencies) {
-      const p = S.permissions[a.id] || { loginBloque: false, peutCreer: true, peutModifier: true, peutAnnuler: false, voirPrix: true };
-      const isBlocked = p.loginBloque || a.statut === 'inactif';
-      html += `<tr class="${isBlocked ? 'blocked-row' : ''}" id="perm-row-${a.id}">
-        <td class="mono">${a.id}</td>
-        <td class="bold">${a.nom}</td>
-        <td>${badge(isBlocked ? 'bloque' : 'actif')}</td>
-        <td style="text-align:center">
-          <label class="toggle" title="${p.loginBloque ? 'Login bloqué' : 'Login actif'}">
-            <input type="checkbox" id="perm-login-${a.id}" ${!p.loginBloque ? 'checked' : ''} onchange="onPermChange('${a.id}')">
-            <span class="toggle-slider"></span>
-          </label>
-        </td>
-        <td style="text-align:center"><input class="perm-check" type="checkbox" id="perm-creer-${a.id}" ${p.peutCreer ? 'checked' : ''}></td>
-        <td style="text-align:center"><input class="perm-check" type="checkbox" id="perm-modif-${a.id}" ${p.peutModifier ? 'checked' : ''}></td>
-        <td style="text-align:center"><input class="perm-check" type="checkbox" id="perm-annul-${a.id}" ${p.peutAnnuler ? 'checked' : ''}></td>
-        <td style="text-align:center"><input class="perm-check" type="checkbox" id="perm-prix-${a.id}" ${p.voirPrix ? 'checked' : ''}></td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="quickBlockLogin('${a.id}',true)" title="Bloquer immédiatement">🚫</button>
-          <button class="btn btn-success btn-sm" onclick="quickBlockLogin('${a.id}',false)" title="Débloquer">✅</button>
-        </td>
-      </tr>`;
-    }
-    html += `</tbody></table>`;
-    document.getElementById('perm-table-wrap').innerHTML = html;
-  } catch (e) {
-    document.getElementById('perm-table-wrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">${e.message}</div></div>`;
-  }
+  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
+  showSection('agencias');
 }
-
-function onPermChange(agencyId) {
-  const loginCheck = document.getElementById('perm-login-' + agencyId);
-  const row = document.getElementById('perm-row-' + agencyId);
-  if (!loginCheck.checked) {
-    row.classList.add('blocked-row');
-  } else {
-    row.classList.remove('blocked-row');
-  }
+function onPermChange() {}
+async function quickBlockLogin() {
+  toast('Blocage login hôtel → Portal Agence uniquement.', 'warn');
 }
-
-async function quickBlockLogin(agencyId, block) {
-  const loginEl = document.getElementById('perm-login-' + agencyId);
-  if (loginEl) loginEl.checked = !block;
-  onPermChange(agencyId);
-  try {
-    const d = await api({ action: 'planb_blockLogin', planbToken: S.token, agencyId, bloque: block });
-    if (d.success) {
-      toast(block ? `🚫 ${agencyId} bloqué` : `✅ ${agencyId} débloqué`, block ? 'warn' : 'success');
-      // Update local
-      if (!S.permissions[agencyId]) S.permissions[agencyId] = {};
-      S.permissions[agencyId].loginBloque = block;
-    } else { if (d.sessionExpired) doLogout(); toast('❌ ' + d.error, 'error'); }
-  } catch (e) { toast('❌ ' + e.message, 'error'); }
-}
-
 async function saveAllPermissions() {
-  const agencies = S.agencias.filter(a => !['HOTEL_ADMIN', 'PLANB_ADMIN', 'MASTER_ADMIN'].includes(a.id));
-  const permissions = {};
-  for (const a of agencies) {
-    const loginEl = document.getElementById('perm-login-' + a.id);
-    if (!loginEl) continue;
-    permissions[a.id] = {
-      loginBloque:  !loginEl.checked,
-      peutCreer:    document.getElementById('perm-creer-' + a.id)?.checked ?? true,
-      peutModifier: document.getElementById('perm-modif-' + a.id)?.checked ?? true,
-      peutAnnuler:  document.getElementById('perm-annul-' + a.id)?.checked ?? false,
-      voirPrix:     document.getElementById('perm-prix-' + a.id)?.checked ?? true
-    };
-  }
-  try {
-    const d = await api({ action: 'planb_savePermissions', planbToken: S.token, permissions });
-    if (d.success) {
-      S.permissions = permissions;
-      toast('✅ Permissions sauvegardées', 'success');
-      // Update blocked count
-      const blocked = Object.values(permissions).filter(p => p.loginBloque).length;
-      const bEl = document.getElementById('nb-bloque');
-      if (bEl) { bEl.style.display = blocked > 0 ? 'inline' : 'none'; bEl.textContent = blocked; }
-    } else { if (d.sessionExpired) doLogout(); toast('❌ ' + d.error, 'error'); }
-  } catch (e) { toast('❌ ' + e.message, 'error'); }
+  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
 }
-
 async function blockAllLogins() {
-  confirmDanger('Bloquer TOUS les logins', 'Bloquer immédiatement TOUS les accès agences ? Aucune agence ne pourra se connecter.', async () => {
-    const agencies = S.agencias.filter(a => !['HOTEL_ADMIN', 'PLANB_ADMIN', 'MASTER_ADMIN'].includes(a.id));
-    for (const a of agencies) { const el = document.getElementById('perm-login-' + a.id); if (el) { el.checked = false; onPermChange(a.id); } }
-    await saveAllPermissions();
-    toast('🚫 Tous les logins ont été bloqués', 'error');
-  });
+  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
 }
-
 async function unblockAllLogins() {
-  const agencies = S.agencias.filter(a => !['HOTEL_ADMIN', 'PLANB_ADMIN', 'MASTER_ADMIN'].includes(a.id));
-  for (const a of agencies) { const el = document.getElementById('perm-login-' + a.id); if (el) { el.checked = true; onPermChange(a.id); } }
-  await saveAllPermissions();
-  toast('✅ Tous les logins ont été débloqués', 'success');
+  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
 }
 
 // ─────────────────────────────────────────────
