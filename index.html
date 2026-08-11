@@ -94,8 +94,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .lp.active{background:var(--gold);color:#12161F;border-color:var(--gold)}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:44px 38px;width:100%;max-width:420px;animation:fadeIn .4s ease;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .login-logo{text-align:center;margin-bottom:28px}
-.login-emblem{width:88px;height:88px;border-radius:20px;overflow:hidden;background:transparent;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 28px rgba(0,0,0,.28);border:1px solid rgba(201,168,76,.35);padding:0}
-.login-emblem img{width:100%;height:100%;object-fit:cover;display:block}
+.login-emblem{width:88px;height:88px;border-radius:20px;overflow:hidden;background:#0B1623;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 28px rgba(0,0,0,.28);border:1px solid rgba(201,168,76,.35);padding:0}
+.login-emblem img{width:100%;height:100%;object-fit:contain;display:block;background:#0B1623}
 .login-brand{font-size:18px;font-weight:700;color:var(--text);letter-spacing:.02em}
 .login-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.1);border:1px solid var(--gold-b);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-top:8px}
 .login-divider{height:1px;background:var(--border);margin:22px 0}
@@ -121,7 +121,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0}
 .topbar-brand{display:flex;align-items:center;gap:10px}
 .topbar-logo{width:32px;height:32px;border-radius:8px;overflow:hidden;background:transparent;border:1px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;padding:0}
-.topbar-logo img{width:100%;height:100%;object-fit:cover;display:block}
+.topbar-logo img{width:100%;height:100%;object-fit:contain;display:block;background:#0B1623}
 .topbar-title{font-size:14px;font-weight:700;color:var(--text)}
 .topbar-title em{color:var(--gold);font-style:normal}
 .topbar-pill{background:rgba(201,168,76,.12);border:1px solid var(--gold-b);border-radius:12px;padding:2px 10px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
@@ -348,6 +348,34 @@ td.bold{font-weight:600;color:var(--text)}
 .perm-table td{padding:8px 12px}
 .perm-check{width:18px;height:18px;accent-color:var(--gold);cursor:pointer}
 .perm-check:disabled{opacity:.4;cursor:not-allowed}
+.perm-legend{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:12px;color:var(--tm);margin:0}
+.perm-legend span{display:inline-flex;align-items:center;gap:6px}
+.perm-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:900px){.perm-kpi-row{grid-template-columns:repeat(2,1fr)}}
+.perm-agency-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;transition:var(--ease)}
+.perm-agency-card:hover{border-color:var(--border2)}
+.perm-agency-card.is-blocked{border-color:var(--danger-b);background:var(--danger-bg)}
+.perm-agency-card.is-active{border-color:var(--success-b)}
+.perm-agency-top{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.perm-agency-id{font-family:var(--mono);font-size:11px;color:var(--gold);font-weight:600}
+.perm-agency-name{font-size:14px;font-weight:700;color:var(--text)}
+.perm-agency-meta{font-size:11px;color:var(--ts);margin-top:2px}
+.perm-flags{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px}
+@media(max-width:800px){.perm-flags{grid-template-columns:repeat(2,1fr)}}
+.perm-flag{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r);background:var(--card2);border:1px solid var(--border);cursor:pointer;user-select:none;transition:var(--ease)}
+.perm-flag:hover{border-color:var(--gold-b)}
+.perm-flag input{width:16px;height:16px;accent-color:var(--gold);cursor:pointer;flex-shrink:0}
+.perm-flag span{font-size:11px;font-weight:600;color:var(--tm);line-height:1.3}
+.perm-flag.on{border-color:var(--success-b);background:var(--success-bg)}
+.perm-flag.on span{color:var(--success)}
+.perm-flag.off{opacity:.85}
+.perm-status-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.perm-status-pill.ok{background:var(--success-bg);color:var(--success);border:1px solid var(--success-b)}
+.perm-status-pill.ko{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-b)}
+.perm-access-toggle{display:inline-flex;align-items:center;gap:8px}
+.perm-log-item{padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--tm)}
+.perm-log-item:last-child{border-bottom:none}
+.perm-log-item time{font-family:var(--mono);font-size:10px;color:var(--ts);margin-right:8px}
 .blocked-row{background:rgba(248,113,113,.04)!important}
 .blocked-row td{opacity:.7}
 
@@ -639,10 +667,10 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
 </style>
 <meta name="theme-color" content="#161B27">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="icon-192.svg" type="image/svg+xml" sizes="192x192">
-<link rel="apple-touch-icon" href="icon-180.svg">
-<link rel="apple-touch-icon" sizes="192x192" href="icon-192.svg">
+<link id="app-favicon" rel="icon" href="favicon.svg?v=n" type="image/svg+xml">
+<link id="app-icon-192" rel="icon" href="icon-192.svg?v=n" type="image/svg+xml" sizes="192x192">
+<link id="app-apple-icon" rel="apple-touch-icon" href="icon-180.svg?v=n">
+<link id="app-apple-icon-192" rel="apple-touch-icon" sizes="192x192" href="icon-192.svg?v=n">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Nhalabene">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -671,7 +699,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   </div>
   <div class="login-box">
     <div class="login-logo">
-      <div class="login-emblem"><img src="logo-login.svg" alt="Nhalabene" width="160" height="160" decoding="async"></div>
+      <div class="login-emblem"><img id="login-logo-img" src="icon-192.svg?v=n" alt="Nhalabene" width="160" height="160" decoding="async"></div>
       <div class="login-brand">Nhalabene</div>
       <div class="login-badge" id="lbl-login-badge">👑 Nhalabene</div>
     </div>
@@ -703,7 +731,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   <div class="topbar">
     <button type="button" class="btn-menu" id="btn-menu" onclick="toggleNav()" aria-label="Menu">☰</button>
     <div class="topbar-brand">
-      <div class="topbar-logo"><img src="logo-topbar.svg" alt="Nhalabene" width="72" height="72" decoding="async"></div>
+      <div class="topbar-logo"><img id="topbar-logo-img" src="icon-192.svg?v=n" alt="Nhalabene" width="72" height="72" decoding="async"></div>
       <div class="topbar-title" id="lbl-topbar-role">Nhalabene</div>
       <div class="topbar-pill" id="lbl-topbar-pill">PRIVÉ</div>
     </div>
@@ -748,7 +776,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
       <button class="nav-item" id="nav-prices" onclick="showSection('prices')"><span class="nav-icon">💰</span> <span id="lbl-nav-prices">Prix</span></button>
 
       <div class="nav-section" id="lbl-nav-sec-access">Contrôle Accès</div>
-      <button class="nav-item" id="nav-permissions" onclick="showSection('permissions')" style="display:none" aria-hidden="true"><span class="nav-icon">🔐</span> <span id="lbl-nav-permissions">Permissions</span></button>
+      <button class="nav-item" id="nav-permissions" onclick="showSection('permissions')"><span class="nav-icon">🔐</span> <span id="lbl-nav-permissions">Permissions & Accès</span></button>
       <button class="nav-item" id="nav-services" onclick="showSection('services')"><span class="nav-icon">⚙️</span> <span id="lbl-nav-services">Services</span></button>
 
       <div class="nav-section" id="lbl-nav-sec-config">Configuration</div>
@@ -792,6 +820,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
                 <button class="btn btn-purple" onclick="showSection('upcoming')">🗓 Próximas Transferências</button>
                 <button class="btn btn-gold" onclick="showSection('nova-reserva')">➕ Nova reserva (complète)</button>
                 <button class="btn btn-ghost" onclick="showSection('agencias')">🏢 Fiche Agence Ruelas</button>
+                <button class="btn btn-ghost" onclick="showSection('permissions')">🔐 Permissions & Accès</button>
                 <button class="btn btn-ghost" onclick="showSection('services')">⚙️ État des services</button>
                 <button class="btn btn-ghost" onclick="showSection('exports')">📥 Exports PDF / Excel</button>
                 <button class="btn btn-ghost" onclick="showSection('prices')">💰 Modifier les prix</button>
@@ -1026,7 +1055,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         </div>
         <div class="info-banner info" style="margin-bottom:12px">
           <span>ℹ️</span>
-          <span>Créez des organisations <strong>Agence 1.0</strong> (feuille <code>ORG_AGENCES</code>). Chaque agence se connecte au portal générique avec son ID (ex. <code>AGN002</code>). Les hôtels créés depuis ce portal portent la colonne <code>ORG_ID</code>.</span>
+          <span>Créez des organisations <strong>Agence 1.0</strong> (feuille <code>ORG_AGENCES</code>). Personnalisez <strong>logo</strong> et <strong>favicon/icône</strong> à la création (URLs). Sans URL → identité Nhalabene par défaut. Login : ID type <code>AGN002</code>.</span>
         </div>
         <div class="c-card" style="margin-bottom:14px">
           <div class="c-card-header"><div class="c-card-title">📋 Liste des agences</div></div>
@@ -1103,11 +1132,54 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         </div>
       </div>
 
-      <!-- ══ PERMISSIONS (retirées — gérées par Portal Agence) ══ -->
-      <div class="section" id="section-permissions" style="display:none" aria-hidden="true">
-        <div class="info-banner gold">
+      <!-- ══ PERMISSIONS & ACCÈS (Master → Agences) ══ -->
+      <div class="section" id="section-permissions">
+        <div class="section-header">
+          <div class="section-title"><span class="ico">🔐</span> Permissions & Accès</div>
+          <div class="section-actions">
+            <button class="btn btn-ghost btn-sm" type="button" onclick="loadPermissions()">↻ Actualiser</button>
+            <button class="btn btn-warn btn-sm" type="button" onclick="blockAllOrgLogins()">🔴 Tout bloquer</button>
+            <button class="btn btn-ghost btn-sm" type="button" onclick="unblockAllOrgLogins()">🟢 Tout activer</button>
+          </div>
+        </div>
+
+        <div class="info-banner gold" style="margin-bottom:12px">
           <span>👑</span>
-          <span>Les permissions hôtels sont gérées uniquement dans le <strong>Portal Agence</strong> (Parametrizar hotel).</span>
+          <span><strong>Seul le compte Master</strong> peut modifier les permissions. Les modifications sont <strong>appliquées immédiatement</strong> et enregistrées dans les <strong>logs</strong>. Portée : agences (Agence 1.0 + Ruelas). Les droits des hôtels restent dans le Portal Agence.</span>
+        </div>
+
+        <div class="c-card" style="margin-bottom:14px">
+          <div class="c-card-body" style="padding:14px 16px">
+            <div style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Légende</div>
+            <div class="perm-legend" id="perm-legend">
+              <span>🟢 Actif</span>
+              <span>🔴 Bloqué</span>
+              <span>☑ Permission accordée</span>
+              <span>☐ Permission refusée</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="perm-kpi-row" id="perm-kpis">
+          <div class="mini-stat"><div class="mini-stat-val" id="perm-kpi-total">—</div><div class="mini-stat-lbl">Agences</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="perm-kpi-actifs" style="color:var(--success)">—</div><div class="mini-stat-lbl">Actives</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="perm-kpi-bloques" style="color:var(--danger)">—</div><div class="mini-stat-lbl">Bloquées</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="perm-kpi-partial" style="color:var(--warn)">—</div><div class="mini-stat-lbl">Accès partiel</div></div>
+        </div>
+
+        <div class="c-card" style="margin-bottom:14px">
+          <div class="c-card-header">
+            <div class="c-card-title">Permissions par agence</div>
+            <input type="search" class="f-inp" id="perm-search" placeholder="Filtrer ID / nom…" style="max-width:220px;padding:6px 10px;font-size:12px" oninput="renderOrgPermissions()">
+          </div>
+          <div class="c-card-body" id="perm-agencies-wrap" style="padding:12px 14px">
+            <div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>
+          </div>
+        </div>
+
+        <div class="c-card">
+          <div class="c-card-header"><div class="c-card-title">🕐 Historique de cette session</div></div>
+          <div class="c-card-body" id="perm-session-log" style="font-size:12px;color:var(--ts)">Aucune modification dans cette session.</div>
         </div>
       </div>
 
@@ -1461,8 +1533,31 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         <div class="fg"><label>Email</label><input type="email" id="org10-email"></div>
         <div class="fg"><label>Téléphone</label><input type="text" id="org10-phone"></div>
         <div class="fg"><label>Ville</label><input type="text" id="org10-city"></div>
-        <div class="fg full"><label>Logo URL</label><input type="url" id="org10-logo" placeholder="https://…"></div>
-        <div class="fg full"><label>Mot de passe <span id="org10-pass-hint">(obligatoire à la création, min. 8)</span></label><input type="password" id="org10-pass" autocomplete="new-password" placeholder="••••••••"></div>
+        <div class="fg full" style="margin-top:4px;padding-top:10px;border-top:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Personnalisation Portal Agence 1.0</div>
+          <div style="font-size:11px;color:var(--ts);line-height:1.45;margin-bottom:10px">Sans URL → logo / favicon <strong>Nhalabene</strong> par défaut. Avec URL → identité de l’agence (login, topbar, favicon, icônes).</div>
+        </div>
+        <div class="fg full"><label>Logo URL</label><input type="url" id="org10-logo" placeholder="https://…/logo.png" oninput="refreshOrg10BrandPreview()"><div class="hint">Login + barre du haut</div></div>
+        <div class="fg full"><label>Icône / Favicon URL</label><input type="url" id="org10-icon" placeholder="https://…/icon.png" oninput="refreshOrg10BrandPreview()"><div class="hint">Onglet navigateur + PWA — si vide, le logo est réutilisé</div></div>
+        <div class="fg" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <img id="org10-logo-preview" src="icon-192.svg?v=n" alt="" style="width:48px;height:48px;border-radius:10px;border:1px solid var(--border);object-fit:contain;background:#0B1623">
+          <img id="org10-icon-preview" src="favicon.svg?v=n" alt="" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border);object-fit:contain;background:#0B1623">
+          <span style="font-size:11px;color:var(--ts)">Aperçu (vide = Nhalabene)</span>
+        </div>
+        <div class="fg full" id="org10-cur-pass-wrap" style="display:none">
+          <label>Mot de passe actuel</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="password" id="org10-cur-pass" readonly autocomplete="off" style="flex:1" value="">
+            <button type="button" class="btn btn-ghost btn-sm" id="org10-cur-pass-btn" onclick="toggleOrg10CurPass()" title="Révéler">👁</button>
+          </div>
+          <div class="hint">Visible uniquement pour le fournisseur — masqué par défaut</div>
+        </div>
+        <div class="fg full"><label>Mot de passe <span id="org10-pass-hint">(obligatoire à la création, min. 8)</span></label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="password" id="org10-pass" autocomplete="new-password" placeholder="••••••••" style="flex:1">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleOrg10NewPass()" title="Révéler">👁</button>
+          </div>
+        </div>
         <div class="fg full"><label>Notes</label><textarea id="org10-notes" rows="2" style="width:100%;min-height:56px"></textarea></div>
       </div>
     </div>
@@ -1589,7 +1684,7 @@ const UI = {
     topbarRole:'Nhalabene', pillRole:'PRIVADO', refreshBtn:'↻ Atualizar', logoutBtn:'⎋ Sair',
     secDashboard:'Dashboard', secDb:'Base de Dados', secAccess:'Controlo de Acesso', secConfig:'Configuração', secExports:'Exportações', secSystem:'Sistema',
     navOverview:'Visão Geral', navReservas:'Reservas', navUpcoming:'Próximas Transferências', navNova:'Nova Reserva',
-    navAgencias:'Agências', navPrices:'Preços', navPermissions:'Permissões', navServices:'Serviços',
+    navAgencias:'Agências', navPrices:'Preços', navPermissions:'Permissões & Acesso', navServices:'Serviços',
     navTemplates:'Modelos de Email', navExportsItem:'Exportar PDF / Excel', navLogs:'Logs do Sistema', navBackup:'Backup / Importação'
   },
   EN:{
@@ -1599,7 +1694,7 @@ const UI = {
     topbarRole:'Nhalabene', pillRole:'PRIVATE', refreshBtn:'↻ Refresh', logoutBtn:'⎋ Sign out',
     secDashboard:'Dashboard', secDb:'Database', secAccess:'Access Control', secConfig:'Configuration', secExports:'Exports', secSystem:'System',
     navOverview:'Overview', navReservas:'Reservations', navUpcoming:'Upcoming Transfers', navNova:'New Reservation',
-    navAgencias:'Agencies', navPrices:'Prices', navPermissions:'Permissions', navServices:'Services',
+    navAgencias:'Agencies', navPrices:'Prices', navPermissions:'Permissions & Access', navServices:'Services',
     navTemplates:'Email Templates', navExportsItem:'Export PDF / Excel', navLogs:'System Logs', navBackup:'Backup / Import'
   },
   FR:{
@@ -1609,7 +1704,7 @@ const UI = {
     topbarRole:'Nhalabene', pillRole:'PRIVÉ', refreshBtn:'↻ Actualiser', logoutBtn:'⎋ Déconnexion',
     secDashboard:'Dashboard', secDb:'Base de Données', secAccess:'Contrôle Accès', secConfig:'Configuration', secExports:'Exports', secSystem:'Système',
     navOverview:"Vue d'ensemble", navReservas:'Réservations', navUpcoming:'Prochains Transferts', navNova:'Nouvelle Réservation',
-    navAgencias:'Agences', navPrices:'Prix', navPermissions:'Permissions', navServices:'Services',
+    navAgencias:'Agences', navPrices:'Prix', navPermissions:'Permissions & Accès', navServices:'Services',
     navTemplates:'Modèles Email', navExportsItem:'Export PDF / Excel', navLogs:'Logs Système', navBackup:'Backup / Import'
   },
   ES:{
@@ -1619,7 +1714,7 @@ const UI = {
     topbarRole:'Nhalabene', pillRole:'PRIVADO', refreshBtn:'↻ Actualizar', logoutBtn:'⎋ Salir',
     secDashboard:'Dashboard', secDb:'Base de Datos', secAccess:'Control de Acceso', secConfig:'Configuración', secExports:'Exportaciones', secSystem:'Sistema',
     navOverview:'Resumen', navReservas:'Reservas', navUpcoming:'Próximas Transferencias', navNova:'Nueva Reserva',
-    navAgencias:'Agencias', navPrices:'Precios', navPermissions:'Permisos', navServices:'Servicios',
+    navAgencias:'Agencias', navPrices:'Precios', navPermissions:'Permisos y acceso', navServices:'Servicios',
     navTemplates:'Plantillas de Email', navExportsItem:'Exportar PDF / Excel', navLogs:'Registros del Sistema', navBackup:'Backup / Importación'
   }
 };
@@ -1686,6 +1781,8 @@ const S = {
   templates    : {},
   logs         : [],
   permissions  : {},   // { agencyId: { loginBloque, peutCreer, peutModifier, peutAnnuler, voirPrix } }
+  permAgences  : [],   // liste agences pour matrice Master
+  permissionsLog: [],  // historique session
   services     : [],   // [ { id, nom, desc, actif, critique } ]
   servicesLog  : [],
   curResId     : null,
@@ -2843,14 +2940,22 @@ async function loadAgencias() {
         wrap10.innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Aucune agence 1.0</div><div class="empty-sub">Cliquez sur « + Nouvelle agence » pour créer la première (ex. AGN002).</div></div>';
       } else {
         let html10 = `<table><thead><tr>
-          <th>ID</th><th>Nom</th><th>Email</th><th>Ville</th><th>Statut</th><th>Hôtels</th><th></th>
+          <th>ID</th><th>Nom</th><th>Email</th><th>Ville</th><th>Mot de passe</th><th>Statut</th><th>Hôtels</th><th></th>
         </tr></thead><tbody>`;
-        for (const a of S.orgAgences) {
+        for (let i = 0; i < S.orgAgences.length; i++) {
+          const a = S.orgAgences[i];
           html10 += `<tr>
             <td class="mono">${escHtml(a.id)}</td>
             <td class="bold">${escHtml(a.nom || '—')}</td>
             <td>${escHtml(a.email || '—')}</td>
             <td>${escHtml(a.city || '—')}</td>
+            <td>
+              <div style="display:inline-flex;align-items:center;gap:6px;max-width:180px">
+                <span class="org-pass-val mono" style="font-size:12px;letter-spacing:.06em">••••••••</span>
+                <button type="button" class="btn btn-ghost btn-sm" data-shown="0" title="Révéler le mot de passe"
+                  onclick="toggleOrgPassReveal(this,${i})" aria-label="Révéler">👁</button>
+              </div>
+            </td>
             <td>${badge(a.statut || 'actif')}</td>
             <td>${a.hotelsCount || 0}</td>
             <td><div style="display:flex;gap:4px;flex-wrap:wrap">
@@ -2935,6 +3040,41 @@ function nextOrgAgenceId_() {
   return 'AGN' + String(n).padStart(3, '0');
 }
 
+/** Liste : masquer / révéler le MDP d’une agence (Fournisseur). */
+function toggleOrgPassReveal(btn, idx) {
+  const a = (S.orgAgences || [])[idx];
+  if (!a || !btn) return;
+  const span = btn.parentElement?.querySelector('.org-pass-val');
+  if (!span) return;
+  const shown = btn.getAttribute('data-shown') === '1';
+  if (shown) {
+    span.textContent = '••••••••';
+    btn.setAttribute('data-shown', '0');
+    btn.textContent = '👁';
+    btn.title = 'Révéler le mot de passe';
+  } else {
+    span.textContent = a.motDePasse ? String(a.motDePasse) : '—';
+    btn.setAttribute('data-shown', '1');
+    btn.textContent = '🙈';
+    btn.title = 'Masquer';
+  }
+}
+
+function toggleOrg10CurPass() {
+  const inp = document.getElementById('org10-cur-pass');
+  const btn = document.getElementById('org10-cur-pass-btn');
+  if (!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  if (btn) { btn.textContent = show ? '🙈' : '👁'; btn.title = show ? 'Masquer' : 'Révéler'; }
+}
+
+function toggleOrg10NewPass() {
+  const inp = document.getElementById('org10-pass');
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
 function openOrgAgenceModal(id) {
   const isEdit = !!id;
   const a = isEdit ? (S.orgAgences || []).find(x => x.id === id) : null;
@@ -2953,10 +3093,36 @@ function openOrgAgenceModal(id) {
   document.getElementById('org10-phone').value = (a && a.phone) || '';
   document.getElementById('org10-city').value = (a && a.city) || '';
   document.getElementById('org10-logo').value = (a && a.logoUrl) || '';
+  document.getElementById('org10-icon').value = (a && a.iconUrl) || '';
   document.getElementById('org10-pass').value = '';
+  document.getElementById('org10-pass').type = 'password';
   document.getElementById('org10-notes').value = (a && a.notes) || '';
+  const curWrap = document.getElementById('org10-cur-pass-wrap');
+  const curInp = document.getElementById('org10-cur-pass');
+  const curBtn = document.getElementById('org10-cur-pass-btn');
+  if (curWrap && curInp) {
+    if (isEdit && a) {
+      curWrap.style.display = 'block';
+      curInp.value = a.motDePasse || '';
+      curInp.type = 'password';
+      if (curBtn) { curBtn.textContent = '👁'; curBtn.title = 'Révéler'; }
+    } else {
+      curWrap.style.display = 'none';
+      curInp.value = '';
+    }
+  }
   S.curOrg10Edit = isEdit;
+  refreshOrg10BrandPreview();
   openModal('ov-org10');
+}
+
+function refreshOrg10BrandPreview() {
+  const logo = document.getElementById('org10-logo')?.value.trim();
+  const icon = document.getElementById('org10-icon')?.value.trim();
+  const pl = document.getElementById('org10-logo-preview');
+  const pi = document.getElementById('org10-icon-preview');
+  if (pl) pl.src = logo || 'icon-192.svg?v=n';
+  if (pi) pi.src = icon || logo || 'favicon.svg?v=n';
 }
 
 async function doSaveOrgAgenceRow() {
@@ -2968,6 +3134,7 @@ async function doSaveOrgAgenceRow() {
     city: document.getElementById('org10-city')?.value.trim(),
     statut: document.getElementById('org10-statut')?.value,
     logoUrl: document.getElementById('org10-logo')?.value.trim(),
+    iconUrl: document.getElementById('org10-icon')?.value.trim(),
     notes: document.getElementById('org10-notes')?.value.trim(),
     motDePasse: document.getElementById('org10-pass')?.value
   };
@@ -3183,25 +3350,262 @@ function deletePriceAt(idx) {
 }
 
 // ─────────────────────────────────────────────
-// PERMISSIONS — retirées (Portal Agence uniquement)
+// PERMISSIONS & ACCÈS — Master → Agences uniquement
 // ─────────────────────────────────────────────
+const ORG_PERM_FLAGS = [
+  { key: 'peutCreer', label: 'Créer résas / ops' },
+  { key: 'peutModifier', label: 'Modifier' },
+  { key: 'peutAnnuler', label: 'Annuler' },
+  { key: 'voirPrix', label: 'Voir prix' }
+];
+
+function defaultOrgPerms() {
+  return {
+    loginBloque: false,
+    peutCreer: true,
+    peutModifier: true,
+    peutAnnuler: true,
+    voirPrix: true,
+    annulerMinHeures: 24,
+    editMinHeures: 24,
+    editChamps: ['client','contact','trajet','datetime','pax','vol','chambre','commentaires']
+  };
+}
+
+function pushPermSessionLog(msg) {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  S.permissionsLog = S.permissionsLog || [];
+  S.permissionsLog.unshift({ t: hh + ':' + mm + ':' + ss, msg: msg });
+  if (S.permissionsLog.length > 40) S.permissionsLog.length = 40;
+  const box = document.getElementById('perm-session-log');
+  if (!box) return;
+  if (!S.permissionsLog.length) {
+    box.innerHTML = 'Aucune modification dans cette session.';
+    return;
+  }
+  box.innerHTML = S.permissionsLog.map(function (e) {
+    return '<div class="perm-log-item"><time>' + e.t + '</time>' + escHtml(e.msg) + '</div>';
+  }).join('');
+}
+
+function orgPermsOf(id) {
+  return Object.assign({}, defaultOrgPerms(), (S.permissions && S.permissions[id]) || {});
+}
+
+function countOrgPermPartial(p) {
+  let n = 0;
+  if (p.peutCreer === false) n++;
+  if (p.peutModifier === false) n++;
+  if (p.peutAnnuler === false) n++;
+  if (p.voirPrix === false) n++;
+  return n;
+}
+
+function updatePermKpis() {
+  const list = S.permAgences || [];
+  let actifs = 0, bloques = 0, partial = 0;
+  for (let i = 0; i < list.length; i++) {
+    const p = orgPermsOf(list[i].id);
+    if (p.loginBloque) bloques++;
+    else actifs++;
+    if (!p.loginBloque && countOrgPermPartial(p) > 0) partial++;
+  }
+  const set = function (id, v) { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('perm-kpi-total', list.length);
+  set('perm-kpi-actifs', actifs);
+  set('perm-kpi-bloques', bloques);
+  set('perm-kpi-partial', partial);
+}
+
 async function loadPermissions() {
-  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
-  showSection('agencias');
+  const wrap = document.getElementById('perm-agencies-wrap');
+  if (wrap) wrap.innerHTML = '<div class="loader"><div class="loader-ring"></div><p>Chargement...</p></div>';
+  try {
+    const d = await api({ action: 'planb_getPermissions', planbToken: S.token });
+    if (d.sessionExpired) { doLogout(); return; }
+    if (!d.success) {
+      if (wrap) wrap.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">' + escHtml(d.error || 'Erreur') + '</div></div>';
+      toast('❌ ' + (d.error || 'Erreur permissions'), 'error');
+      return;
+    }
+    S.permissions = d.permissions || {};
+    S.permAgences = d.agences || [];
+    // Garantir une entrée pour chaque agence listée
+    for (let i = 0; i < S.permAgences.length; i++) {
+      const id = S.permAgences[i].id;
+      if (!S.permissions[id]) S.permissions[id] = defaultOrgPerms();
+    }
+    renderOrgPermissions();
+  } catch (e) {
+    if (wrap) wrap.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">' + escHtml(e.message) + '</div></div>';
+    toast('❌ ' + e.message, 'error');
+  }
 }
+
+function renderOrgPermissions() {
+  const wrap = document.getElementById('perm-agencies-wrap');
+  if (!wrap) return;
+  updatePermKpis();
+  const q = String((document.getElementById('perm-search') && document.getElementById('perm-search').value) || '').toLowerCase().trim();
+  let list = (S.permAgences || []).slice();
+  if (q) {
+    list = list.filter(function (a) {
+      return String(a.id || '').toLowerCase().indexOf(q) >= 0 ||
+        String(a.nom || '').toLowerCase().indexOf(q) >= 0 ||
+        String(a.email || '').toLowerCase().indexOf(q) >= 0;
+    });
+  }
+  if (!list.length) {
+    wrap.innerHTML = '<div class="empty"><div class="empty-icon">🔐</div><div class="empty-title">Aucune agence</div><div class="empty-sub">Créez une agence dans « Agences 1.0 », puis revenez ici.</div></div>';
+    return;
+  }
+  let html = '';
+  for (let i = 0; i < list.length; i++) {
+    const a = list[i];
+    const id = a.id;
+    const p = orgPermsOf(id);
+    const blocked = !!p.loginBloque;
+    const typeLbl = a.type === 'legacy' ? 'Legacy Ruelas' : 'Agence 1.0';
+    const statusHtml = blocked
+      ? '<span class="perm-status-pill ko">🔴 Bloqué</span>'
+      : '<span class="perm-status-pill ok">🟢 Actif</span>';
+    html += '<div class="perm-agency-card ' + (blocked ? 'is-blocked' : 'is-active') + '" data-org="' + escHtml(id) + '">';
+    html += '<div class="perm-agency-top">';
+    html += '<div><div class="perm-agency-id">' + escHtml(id) + ' · ' + escHtml(typeLbl) + '</div>';
+    html += '<div class="perm-agency-name">' + escHtml(a.nom || id) + '</div>';
+    html += '<div class="perm-agency-meta">' + escHtml(a.email || '—') + (a.city ? ' · ' + escHtml(a.city) : '') + ' · ' + (a.hotelsCount || 0) + ' hôtel(s)</div></div>';
+    html += '<div class="perm-access-toggle">' + statusHtml;
+    html += '<label class="toggle-wrap" title="Activer / bloquer le login">';
+    html += '<label class="toggle"><input type="checkbox" ' + (blocked ? '' : 'checked') + ' onchange="toggleOrgLogin(\'' + escHtml(id) + '\', this.checked)">';
+    html += '<span class="toggle-slider"></span></label>';
+    html += '<span class="toggle-label">' + (blocked ? 'Débloquer' : 'Accès OK') + '</span></label></div>';
+    html += '</div>';
+    html += '<div class="perm-flags">';
+    for (let f = 0; f < ORG_PERM_FLAGS.length; f++) {
+      const flag = ORG_PERM_FLAGS[f];
+      const on = p[flag.key] !== false;
+      const mark = on ? '☑' : '☐';
+      html += '<label class="perm-flag ' + (on ? 'on' : 'off') + '">';
+      html += '<input type="checkbox" class="perm-check" ' + (on ? 'checked' : '') + ' ' + (blocked ? 'disabled' : '') +
+        ' onchange="onOrgPermFlagChange(\'' + escHtml(id) + '\',\'' + flag.key + '\', this.checked)">';
+      html += '<span>' + mark + ' ' + escHtml(flag.label) + '</span></label>';
+    }
+    html += '</div></div>';
+  }
+  wrap.innerHTML = html;
+}
+
+async function persistOrgPerms(agencyId, perms, label) {
+  try {
+    const d = await api({
+      action: 'planb_savePermissions',
+      planbToken: S.token,
+      agencyId: agencyId,
+      permissions: perms
+    }, { timeoutMs: 45000 });
+    if (d.sessionExpired) { doLogout(); return false; }
+    if (!d.success) {
+      toast('❌ ' + (d.error || 'Erreur'), 'error');
+      return false;
+    }
+    if (!S.permissions) S.permissions = {};
+    S.permissions[agencyId] = Object.assign({}, defaultOrgPerms(), perms);
+    pushPermSessionLog((label || 'Maj') + ' — ' + agencyId);
+    toast('✅ Permissions enregistrées · ' + agencyId, 'success');
+    renderOrgPermissions();
+    return true;
+  } catch (e) {
+    toast('❌ ' + e.message, 'error');
+    return false;
+  }
+}
+
+async function toggleOrgLogin(agencyId, accessOk) {
+  const cur = orgPermsOf(agencyId);
+  cur.loginBloque = !accessOk;
+  const ok = await persistOrgPerms(
+    agencyId,
+    cur,
+    accessOk ? '🟢 Accès activé' : '🔴 Accès bloqué'
+  );
+  if (!ok) loadPermissions();
+}
+
+async function onOrgPermFlagChange(agencyId, key, checked) {
+  const cur = orgPermsOf(agencyId);
+  if (cur.loginBloque) {
+    toast('Agence bloquée — débloquez d’abord l’accès.', 'warn');
+    renderOrgPermissions();
+    return;
+  }
+  cur[key] = !!checked;
+  const flagMeta = ORG_PERM_FLAGS.find(function (x) { return x.key === key; });
+  const lbl = flagMeta ? flagMeta.label : key;
+  const ok = await persistOrgPerms(
+    agencyId,
+    cur,
+    (checked ? '☑ ' : '☐ ') + lbl
+  );
+  if (!ok) loadPermissions();
+}
+
+async function blockAllOrgLogins() {
+  confirmDanger('Tout bloquer', 'Bloquer le login de toutes les agences listées ? Effet immédiat.', async function () {
+    const list = S.permAgences || [];
+    let n = 0;
+    for (let i = 0; i < list.length; i++) {
+      const cur = orgPermsOf(list[i].id);
+      cur.loginBloque = true;
+      const d = await api({
+        action: 'planb_savePermissions',
+        planbToken: S.token,
+        agencyId: list[i].id,
+        permissions: cur
+      }, { timeoutMs: 45000 });
+      if (d.success) {
+        S.permissions[list[i].id] = cur;
+        n++;
+      }
+    }
+    pushPermSessionLog('🔴 Blocage global — ' + n + ' agence(s)');
+    toast('🔴 ' + n + ' agence(s) bloquée(s)', 'warn');
+    renderOrgPermissions();
+  });
+}
+
+async function unblockAllOrgLogins() {
+  confirmDanger('Tout activer', 'Réactiver le login de toutes les agences listées ?', async function () {
+    const list = S.permAgences || [];
+    let n = 0;
+    for (let i = 0; i < list.length; i++) {
+      const cur = orgPermsOf(list[i].id);
+      cur.loginBloque = false;
+      const d = await api({
+        action: 'planb_savePermissions',
+        planbToken: S.token,
+        agencyId: list[i].id,
+        permissions: cur
+      }, { timeoutMs: 45000 });
+      if (d.success) {
+        S.permissions[list[i].id] = cur;
+        n++;
+      }
+    }
+    pushPermSessionLog('🟢 Activation globale — ' + n + ' agence(s)');
+    toast('🟢 ' + n + ' agence(s) active(s)', 'success');
+    renderOrgPermissions();
+  });
+}
+
+// Aliases legacy (nav / démo)
 function onPermChange() {}
-async function quickBlockLogin() {
-  toast('Blocage login hôtel → Portal Agence uniquement.', 'warn');
-}
-async function saveAllPermissions() {
-  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
-}
-async function blockAllLogins() {
-  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
-}
-async function unblockAllLogins() {
-  toast('Permissions hôtels → Portal Agence uniquement.', 'warn');
-}
+async function quickBlockLogin() { toast('Utilisez le toggle Actif / Bloqué par agence.', 'info'); }
+async function saveAllPermissions() { toast('Les permissions sont enregistrées immédiatement à chaque clic.', 'info'); }
+async function blockAllLogins() { return blockAllOrgLogins(); }
+async function unblockAllLogins() { return unblockAllOrgLogins(); }
 
 // ─────────────────────────────────────────────
 // SERVICES
@@ -3825,10 +4229,17 @@ function demoApi(p) {
     { date: new Date().toLocaleString('fr-FR'), action:'CONNEXION_AGENCE', utilisateur:'AGN001', details:'{"nom":"Agência Lisboa Premium"}' }
   ];
   const DEMO_PERMS = {
+    'AGENCE_ADMIN': { loginBloque: false, peutCreer: true, peutModifier: true, peutAnnuler: true, voirPrix: true },
     'AGN001': { loginBloque: false, peutCreer: true, peutModifier: true, peutAnnuler: false, voirPrix: true },
     'AGN002': { loginBloque: false, peutCreer: true, peutModifier: false, peutAnnuler: false, voirPrix: true },
     'AGN003': { loginBloque: true,  peutCreer: false, peutModifier: false, peutAnnuler: false, voirPrix: false }
   };
+  const DEMO_ORG_PERMS_LIST = [
+    { id: 'AGENCE_ADMIN', nom: 'Agence Ruelas', email: 'contact@ruelas.pt', city: 'Lisboa', statut: 'actif', type: 'legacy', hotelsCount: 2 },
+    { id: 'AGN001', nom: 'Agência Lisboa Premium', email: 'lisboa@demo.pt', city: 'Lisboa', statut: 'actif', type: 'agence_1_0', hotelsCount: 3 },
+    { id: 'AGN002', nom: 'Transfer Cascais', email: 'cascais@demo.pt', city: 'Cascais', statut: 'actif', type: 'agence_1_0', hotelsCount: 1 },
+    { id: 'AGN003', nom: 'Algarve Mobility', email: 'algarve@demo.pt', city: 'Faro', statut: 'actif', type: 'agence_1_0', hotelsCount: 0 }
+  ];
   const DEMO_SVCS = DEFAULT_SERVICES.map(s => ({ ...s, actif: !['api_externe', 'mode_lecture'].includes(s.id) }));
 
   return new Promise(resolve => setTimeout(() => {
@@ -3874,9 +4285,30 @@ function demoApi(p) {
         resolve({ success: true });
         break;
       }
-      case 'planb_getPermissions': resolve({ success: true, permissions: DEMO_PERMS }); break;
-      case 'planb_savePermissions': resolve({ success: true }); break;
-      case 'planb_blockLogin': resolve({ success: true }); break;
+      case 'planb_getPermissions': resolve({
+        success: true,
+        permissions: DEMO_PERMS,
+        agences: DEMO_ORG_PERMS_LIST,
+        defaut: { loginBloque: false, peutCreer: true, peutModifier: true, peutAnnuler: true, voirPrix: true },
+        scope: 'org_agences'
+      }); break;
+      case 'planb_savePermissions': {
+        const map = p.permissions || {};
+        if (p.agencyId && map && !map[p.agencyId] && (map.peutCreer !== undefined || map.loginBloque !== undefined)) {
+          DEMO_PERMS[p.agencyId] = Object.assign({}, DEMO_PERMS[p.agencyId] || {}, map);
+        } else {
+          Object.keys(map).forEach(function (k) { DEMO_PERMS[k] = Object.assign({}, DEMO_PERMS[k] || {}, map[k]); });
+        }
+        resolve({ success: true });
+        break;
+      }
+      case 'planb_blockLogin': {
+        if (p.agencyId) {
+          DEMO_PERMS[p.agencyId] = Object.assign({}, DEMO_PERMS[p.agencyId] || {}, { loginBloque: !!p.bloque });
+        }
+        resolve({ success: true, agencyId: p.agencyId, bloque: !!p.bloque });
+        break;
+      }
       case 'planb_getServices': resolve({ success: true, services: DEMO_SVCS }); break;
       case 'planb_saveService': resolve({ success: true }); break;
       case 'planb_getEmailTemplates': resolve({ success: true, templates: [
