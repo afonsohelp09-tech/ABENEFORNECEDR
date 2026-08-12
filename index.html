@@ -1031,6 +1031,13 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
             <div class="form-grid" style="margin-bottom:18px">
               <div class="fg"><label>Statut initial</label><select id="adm-cr-statut"><option value="pendente">⏳ Pendente</option><option value="confirmado">✅ Confirmado</option></select></div>
               <div class="fg"><label>Agence</label><select id="adm-cr-ag" onchange="admOnOrigChange()"><option value="">— Non attribuée —</option></select></div>
+              <div class="fg full" style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(201,168,76,.08);border:1px solid var(--gold-b);border-radius:var(--r)">
+                <input type="checkbox" id="adm-cr-nextlevel" style="width:18px;height:18px;margin-top:2px;accent-color:var(--gold)">
+                <div>
+                  <label for="adm-cr-nextlevel" style="font-size:13px;font-weight:600;color:var(--text);cursor:pointer">Canal Next Level → partenaire Ruelas</label>
+                  <div class="hint" style="margin-top:4px">Exception : la résa arrive chez le Fournisseur et s’affiche directement dans le Portal Agence Ruelas (comme partenaire Next Level). Si aucune agence/hôtel n’est choisi → service propre Ruelas.</div>
+                </div>
+              </div>
               <div class="fg"><label>Prix final (€)</label><input type="number" id="adm-cr-prix" min="0" step="0.01" placeholder="35.00"><div class="hint" id="adm-cr-prix-hint"></div></div>
               <div class="fg"><label>Paiement</label><select id="adm-cr-paiement"><option value="non_payé">Non payé</option><option value="payé">Payé</option></select></div>
               <div class="fg full"><label>Commentaires</label><textarea id="adm-cr-com" placeholder="Informations supplémentaires…"></textarea></div>
@@ -2425,7 +2432,7 @@ function renderReservas() {
       : `<span style="color:var(--ts);font-size:10px">Non payé</span>`;
 
     html += `<tr>
-      <td class="mono">${r.id}</td>
+      <td class="mono">${r.id}${r.fromNextLevel || r.criadoPor === 'NEXT_LEVEL' || r.canal === 'NEXT_LEVEL' ? ' <span style="font-size:9px;background:rgba(201,168,76,.2);color:var(--gold);border:1px solid var(--gold-b);border-radius:4px;padding:1px 5px;font-weight:700">NL</span>' : ''}</td>
       <td class="bold">${r.clientNom || '—'}</td>
       <td>${fmtDate(r.dateTransfer)}</td>
       <td>${r.heureTransfer || '—'}</td>
@@ -2633,7 +2640,8 @@ async function admDoCreateReserva() {
       agencyId: document.getElementById('adm-cr-ag').value,
       prixFinal: document.getElementById('adm-cr-prix').value,
       statutPaiement: document.getElementById('adm-cr-paiement').value,
-      commentaires: document.getElementById('adm-cr-com').value.trim()
+      commentaires: document.getElementById('adm-cr-com').value.trim(),
+      canal: document.getElementById('adm-cr-nextlevel')?.checked ? 'NEXT_LEVEL' : ''
     });
     if (d.success) {
       if (msgEl) { msgEl.textContent = '✅ Réservation créée : ' + d.id; msgEl.className = 'modal-msg success show'; }
@@ -2667,6 +2675,8 @@ function admResetCreateForm() {
   document.getElementById('adm-cr-lang').value = 'pt';
   document.getElementById('adm-cr-statut').value = 'pendente';
   document.getElementById('adm-cr-paiement').value = 'non_payé';
+  const nl = document.getElementById('adm-cr-nextlevel');
+  if (nl) nl.checked = false;
   const msgEl = document.getElementById('adm-create-msg');
   if (msgEl) msgEl.className = 'modal-msg';
   const hint = document.getElementById('adm-cr-prix-hint');
