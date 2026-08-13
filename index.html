@@ -497,17 +497,14 @@ html[data-theme="dark"] .acts-dd-menu{background:var(--surface,#1a2332);box-shad
   }
   .sidebar.open{transform:translateX(0)}
   .stats-row{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:1fr}
-  .lang-top .lp,.topbar-right .lang-app .lp{display:none}
-  .lang-select-mobile{display:block}
+  .lang-top .lp,.lang-top .lang-select-mobile,.topbar-right .lang-app{display:none!important}
+  .lang-top{position:absolute;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));left:auto;width:auto;max-width:calc(100vw - 20px);margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:6px;z-index:370;overflow:visible}
   .nav-item{padding:12px 12px;font-size:14px;min-height:44px}
   .topbar-pill{display:none}
   body.nav-open{overflow:hidden;touch-action:none}
 }
 @media(max-width:560px){
-  .lang-top .lp,.topbar-right .lang-app .lp{display:none}
-  .lang-top .lang-select-mobile,.topbar-right .lang-app .lang-select-mobile{display:block}
-  .lang-top .lang-select-mobile{min-height:40px;font-size:14px}
-  .topbar-right .lang-app .lang-select-mobile{min-width:64px}
+  .lang-top .lp,.lang-top .lang-select-mobile,.topbar-right .lang-app{display:none!important}
 }
 
 /* ═══ PACK MOBILE RESPONSIVE (cahier des charges — après règles existantes) ═══ */
@@ -571,8 +568,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   .login-box{max-width:100%;width:100%;padding:28px 20px;border-radius:16px;margin:0 12px;box-sizing:border-box}
   .login-emblem{width:64px;height:64px}
   .login-brand{font-size:18px}
-  .lang-top .lp{display:none!important}
-  .lang-top .lang-select-mobile{display:block!important}
+  .lang-top .lp,.lang-top .lang-select-mobile{display:none!important}
   .topbar-title{font-size:14px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .stats-row,.service-grid{grid-template-columns:1fr}
   input,select,textarea,.f-inp{font-size:16px!important}
@@ -593,6 +589,26 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
   --safe-right:env(safe-area-inset-right,0px);
 }
 .display-prefs{display:none}
+.disp-menu-anchor{position:relative;flex-shrink:0;z-index:40}
+.disp-more-btn{width:36px;height:36px;border:1px solid rgba(255,255,255,.25);border-radius:8px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.92);font-size:22px;font-weight:700;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0 0 3px;font-family:Georgia,serif}
+.disp-more-btn:hover{border-color:var(--gold);color:var(--gold)}
+.disp-menu-pop{display:none!important;position:absolute;top:calc(100% + 8px);right:0;flex-direction:column;align-items:stretch;gap:10px;background:var(--white,#fff);border:1px solid var(--border,#D0DCE8);border-radius:12px;padding:12px;box-shadow:0 12px 32px rgba(13,33,55,.18);min-width:268px;z-index:400;box-sizing:border-box}
+.disp-menu-pop.open{display:flex!important}
+.disp-menu-pop .disp-seg{width:100%;justify-content:stretch;flex-wrap:wrap}
+.disp-menu-pop .disp-btn{flex:1;min-width:0}
+.disp-lang-block{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+.disp-lang-lab{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ts,#64748b)}
+.disp-lang{width:100%;justify-content:stretch;flex-wrap:nowrap}
+.disp-lang .disp-btn{flex:1;min-width:0;text-align:center;padding-left:6px;padding-right:6px}
+html:not([data-theme="light"]) .disp-menu-pop{background:var(--card,#1C2333);border-color:var(--border)}
+html[data-theme="light"] .disp-more-btn{border-color:rgba(13,33,55,.2);background:rgba(13,33,55,.06);color:#334155}
+.theme-corner-login,.topbar-theme-inline,.lang-app,.lang-top .lp,.lang-select-mobile{display:none!important}
+@media(min-width:769px){
+  html[data-text-size="md"]{zoom:1.12;font-size:16px}
+  html[data-text-size="lg"]{zoom:1.25;font-size:18px}
+  html[data-text-size="md"] body{font-size:16px}
+  html[data-text-size="lg"] body{font-size:18px}
+}
 .disp-seg{display:inline-flex;align-items:center;background:rgba(13,33,55,.08);border:1px solid rgba(13,33,55,.16);border-radius:999px;padding:2px;gap:0}
 .disp-btn{appearance:none;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--ts,#64748b);padding:7px 12px;border-radius:999px;min-height:36px;line-height:1.2;touch-action:manipulation;white-space:nowrap}
 .disp-btn.on,.disp-btn[aria-pressed="true"]{background:rgba(201,168,76,.22);color:#7a5a12;box-shadow:inset 0 0 0 1px var(--gold-b,rgba(201,168,76,.28))}
@@ -608,10 +624,14 @@ html:not([data-theme="light"]) .disp-btn.on,html:not([data-theme="light"]) .disp
   .mini-stat-val,.stat-val{font-size:var(--m-stat,1.25rem)!important}
   .m-card-client,.tl-client{font-size:var(--m-card,.9375rem)!important}
   .m-card-meta,.tl-route,.helper{font-size:var(--m-meta,.8125rem)!important}
-  .display-prefs{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;width:100%;max-width:440px;margin:0 auto 12px;padding:0 12px;box-sizing:border-box;position:relative;z-index:13}
-  #app-screen .display-prefs{max-width:none;margin:0;padding:6px 12px 2px;justify-content:flex-start}
-  .theme-corner-login,.topbar-theme-inline{display:none!important}
-  .display-prefs .theme-btn,.display-prefs .disp-btn{min-width:auto!important;width:auto!important;height:auto!important;min-height:36px!important;font-size:12px!important;padding:7px 12px!important;line-height:1.2!important}
+  .tl-route{white-space:normal;overflow:visible;text-overflow:unset;line-height:1.35}
+  .disp-more-btn{min-width:44px;min-height:44px;width:44px;height:44px}
+  .topbar-right .lang-app{display:none!important}
+  .topbar,.topbar-right,.disp-menu-anchor{overflow:visible}
+  .topbar{z-index:40}
+  .disp-menu-anchor{z-index:50}
+  #app-screen .disp-menu-pop{left:0;right:auto;min-width:0;width:min(300px,calc(100vw - 20px));max-width:calc(100vw - 20px);max-height:min(70dvh,calc(100dvh - 72px - env(safe-area-inset-bottom,0px)));overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .disp-menu-pop .disp-btn{min-width:auto!important;width:auto!important;height:auto!important;min-height:36px!important;font-size:12px!important;padding:7px 10px!important;line-height:1.2!important}
 }
 @media(max-width:640px){
   body{font-size:var(--m-fs,14px);line-height:1.45}
@@ -723,16 +743,28 @@ html:not([data-theme="light"]) .disp-btn.on,html:not([data-theme="light"]) .disp
       <option value="FR">Français (FR)</option>
       <option value="ES">Español (ES)</option>
     </select>
-  </div>
-  <div class="display-prefs" role="region" aria-label="Affichage">
-    <div class="disp-seg" role="group" aria-label="Thème">
-      <button type="button" class="disp-btn theme-btn" data-theme-pick="light" aria-pressed="false" title="Clair">☀️ Clair</button>
-      <button type="button" class="disp-btn theme-btn on" data-theme-pick="dark" aria-pressed="true" title="Foncé">🌙 Foncé</button>
-    </div>
-    <div class="disp-seg" role="group" aria-label="Taille du texte">
-      <button type="button" class="disp-btn on" data-text-size-pick="sm" aria-pressed="true">Petite</button>
-      <button type="button" class="disp-btn" data-text-size-pick="md" aria-pressed="false">Moyenne</button>
-      <button type="button" class="disp-btn" data-text-size-pick="lg" aria-pressed="false">Grand</button>
+    <div class="disp-menu-anchor">
+      <button type="button" class="disp-more-btn" onclick="toggleDispMenu(event)" title="Affichage" aria-label="Affichage" aria-expanded="false">⋮</button>
+      <div class="display-prefs disp-menu-pop" role="dialog" aria-label="Affichage" onclick="event.stopPropagation()">
+        <div class="disp-seg" role="group" aria-label="Thème">
+          <button type="button" class="disp-btn theme-btn" data-theme-pick="light" aria-pressed="false" title="Clair">☀️ Clair</button>
+          <button type="button" class="disp-btn theme-btn on" data-theme-pick="dark" aria-pressed="true" title="Foncé">🌙 Foncé</button>
+        </div>
+        <div class="disp-lang-block">
+          <div class="disp-lang-lab">Idioma</div>
+          <div class="disp-seg disp-lang" role="group" aria-label="Idioma">
+            <button type="button" class="disp-btn" data-lang-pick="PT" onclick="setLang('PT','login')">PT</button>
+            <button type="button" class="disp-btn" data-lang-pick="EN" onclick="setLang('EN','login')">EN</button>
+            <button type="button" class="disp-btn" data-lang-pick="FR" onclick="setLang('FR','login')">FR</button>
+            <button type="button" class="disp-btn" data-lang-pick="ES" onclick="setLang('ES','login')">ES</button>
+          </div>
+        </div>
+        <div class="disp-seg" role="group" aria-label="Taille du texte">
+          <button type="button" class="disp-btn on" data-text-size-pick="sm" aria-pressed="true">Petite</button>
+          <button type="button" class="disp-btn" data-text-size-pick="md" aria-pressed="false">Moyenne</button>
+          <button type="button" class="disp-btn" data-text-size-pick="lg" aria-pressed="false">Grand</button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="login-box">
@@ -774,6 +806,29 @@ html:not([data-theme="light"]) .disp-btn.on,html:not([data-theme="light"]) .disp
       <div class="topbar-pill" id="lbl-topbar-pill">PRIVÉ</div>
     </div>
     <div class="topbar-right">
+      <div class="disp-menu-anchor">
+        <button type="button" class="disp-more-btn" onclick="toggleDispMenu(event)" title="Affichage" aria-label="Affichage" aria-expanded="false">⋮</button>
+        <div class="display-prefs disp-menu-pop" role="dialog" aria-label="Affichage" onclick="event.stopPropagation()">
+          <div class="disp-seg" role="group" aria-label="Thème">
+            <button type="button" class="disp-btn theme-btn" data-theme-pick="light" aria-pressed="false" title="Clair">☀️ Clair</button>
+            <button type="button" class="disp-btn theme-btn on" data-theme-pick="dark" aria-pressed="true" title="Foncé">🌙 Foncé</button>
+          </div>
+          <div class="disp-lang-block">
+            <div class="disp-lang-lab">Idioma</div>
+            <div class="disp-seg disp-lang" role="group" aria-label="Idioma">
+              <button type="button" class="disp-btn" data-lang-pick="PT" onclick="setLang('PT','app')">PT</button>
+              <button type="button" class="disp-btn" data-lang-pick="EN" onclick="setLang('EN','app')">EN</button>
+              <button type="button" class="disp-btn" data-lang-pick="FR" onclick="setLang('FR','app')">FR</button>
+              <button type="button" class="disp-btn" data-lang-pick="ES" onclick="setLang('ES','app')">ES</button>
+            </div>
+          </div>
+          <div class="disp-seg" role="group" aria-label="Taille du texte">
+            <button type="button" class="disp-btn on" data-text-size-pick="sm" aria-pressed="true">Petite</button>
+            <button type="button" class="disp-btn" data-text-size-pick="md" aria-pressed="false">Moyenne</button>
+            <button type="button" class="disp-btn" data-text-size-pick="lg" aria-pressed="false">Grand</button>
+          </div>
+        </div>
+      </div>
       <div class="topbar-user"><span class="topbar-dot"></span><span id="admin-nom">Admin</span></div>
       <span style="font-size:11px;color:var(--tl);font-family:var(--mono)" id="sys-clock">—</span>
       <div class="theme-seg topbar-theme-inline" role="group" aria-label="Thème">
@@ -786,25 +841,14 @@ html:not([data-theme="light"]) .disp-btn.on,html:not([data-theme="light"]) .disp
         <button type="button" class="lp" onclick="setLang('FR','app')">FR</button>
         <button type="button" class="lp" onclick="setLang('ES','app')">ES</button>
         <select id="lang-app-sel" class="lang-select-mobile" aria-label="Idioma" onchange="setLang(this.value,'app')">
-          <option value="PT">Português (PT)</option>
-          <option value="EN">English (EN)</option>
-          <option value="FR">Français (FR)</option>
-          <option value="ES">Español (ES)</option>
+          <option value="PT">PT</option>
+          <option value="EN">EN</option>
+          <option value="FR">FR</option>
+          <option value="ES">ES</option>
         </select>
       </div>
       <button class="btn-topbar" id="btn-refresh" onclick="doRefresh()">↻ Actualiser</button>
       <button class="btn-topbar danger" id="btn-logout" onclick="doLogout()">⎋ Déconnexion</button>
-    </div>
-  </div>
-  <div class="display-prefs" role="region" aria-label="Affichage">
-    <div class="disp-seg" role="group" aria-label="Thème">
-      <button type="button" class="disp-btn theme-btn" data-theme-pick="light" aria-pressed="false" title="Clair">☀️ Clair</button>
-      <button type="button" class="disp-btn theme-btn on" data-theme-pick="dark" aria-pressed="true" title="Foncé">🌙 Foncé</button>
-    </div>
-    <div class="disp-seg" role="group" aria-label="Taille du texte">
-      <button type="button" class="disp-btn on" data-text-size-pick="sm" aria-pressed="true">Petite</button>
-      <button type="button" class="disp-btn" data-text-size-pick="md" aria-pressed="false">Moyenne</button>
-      <button type="button" class="disp-btn" data-text-size-pick="lg" aria-pressed="false">Grand</button>
     </div>
   </div>
 
@@ -1798,7 +1842,7 @@ const UI = {
     secDashboard:'Dashboard', secDb:'Base de Dados', secAccess:'Controlo de Acesso', secConfig:'Configuração', secExports:'Exportações', secSystem:'Sistema',
     navOverview:'Visão Geral', navReservas:'Reservas', navUpcoming:'Próximas Transferências', navNova:'Nova Reserva',
     navAgencias:'Agências', navPrices:'Preços', navPermissions:'Permissões & Acesso', navServices:'Serviços',
-    navTemplates:'Modelos de Email', navNextLevel:'Next Level', navExportsItem:'Exportar PDF / Excel', navLogs:'Logs do Sistema', navBackup:'Backup / Importação'
+    navTemplates:'Modelos de Email', navNextLevel:'Next Level', navExportsItem:'Exportar PDF / Excel', navLogs:'Logs do Sistema', navBackup:'Backup / Importação',dispMenu:'Exibição',themeLight:'Claro',themeDark:'Escuro',sizeSm:'Pequena',sizeMd:'Média',sizeLg:'Grande',themeGroup:'Tema',sizeGroup:'Tamanho do texto',bnRes:'Reservas',bnUpcomingShort:'Próximas',bnNew:'Nova',bnHotels:'Hotéis',bnMore:'Mais',bnAll:'Reservas',bnUpcoming:'Próximas',bnNova:'Nova',bnHist:'Histórico',langLabel:'Idioma'
   },
   EN:{
     loginBadge:'👑 Nhalabene', loginTitle:'🔐 Nhalabene Access', idLabel:'Admin ID', passLabel:'Password',
@@ -1808,7 +1852,7 @@ const UI = {
     secDashboard:'Dashboard', secDb:'Database', secAccess:'Access Control', secConfig:'Configuration', secExports:'Exports', secSystem:'System',
     navOverview:'Overview', navReservas:'Reservations', navUpcoming:'Upcoming Transfers', navNova:'New Reservation',
     navAgencias:'Agencies', navPrices:'Prices', navPermissions:'Permissions & Access', navServices:'Services',
-    navTemplates:'Email Templates', navNextLevel:'Next Level', navExportsItem:'Export PDF / Excel', navLogs:'System Logs', navBackup:'Backup / Import'
+    navTemplates:'Email Templates', navNextLevel:'Next Level', navExportsItem:'Export PDF / Excel', navLogs:'System Logs', navBackup:'Backup / Import',dispMenu:'Display',themeLight:'Light',themeDark:'Dark',sizeSm:'Small',sizeMd:'Medium',sizeLg:'Large',themeGroup:'Theme',sizeGroup:'Text size',bnRes:'Bookings',bnUpcomingShort:'Upcoming',bnNew:'New',bnHotels:'Hotels',bnMore:'More',bnAll:'Bookings',bnUpcoming:'Upcoming',bnNova:'New',bnHist:'History',langLabel:'Language'
   },
   FR:{
     loginBadge:'👑 Nhalabene',     loginTitle:'🔐 Accès Nhalabene', idLabel:'Identifiant', passLabel:'Mot de Passe',
@@ -1818,7 +1862,7 @@ const UI = {
     secDashboard:'Dashboard', secDb:'Base de Données', secAccess:'Contrôle Accès', secConfig:'Configuration', secExports:'Exports', secSystem:'Système',
     navOverview:"Vue d'ensemble", navReservas:'Réservations', navUpcoming:'Prochains Transferts', navNova:'Nouvelle Réservation',
     navAgencias:'Agences', navPrices:'Prix', navPermissions:'Permissions & Accès', navServices:'Services',
-    navTemplates:'Modèles Email', navNextLevel:'Next Level', navExportsItem:'Export PDF / Excel', navLogs:'Logs Système', navBackup:'Backup / Import'
+    navTemplates:'Modèles Email', navNextLevel:'Next Level', navExportsItem:'Export PDF / Excel', navLogs:'Logs Système', navBackup:'Backup / Import',dispMenu:'Affichage',themeLight:'Clair',themeDark:'Foncé',sizeSm:'Petite',sizeMd:'Moyenne',sizeLg:'Grande',themeGroup:'Thème',sizeGroup:'Taille du texte',bnRes:'Réserv.',bnUpcomingShort:'Prochains',bnNew:'Nouvelle',bnHotels:'Hôtels',bnMore:'Plus',bnAll:'Réserv.',bnUpcoming:'Prochains',bnNova:'Nouvelle',bnHist:'Historique',langLabel:'Langue'
   },
   ES:{
     loginBadge:'👑 Nhalabene', loginTitle:'🔐 Acceso Nhalabene', idLabel:'Identificador', passLabel:'Contraseña',
@@ -1828,7 +1872,7 @@ const UI = {
     secDashboard:'Dashboard', secDb:'Base de Datos', secAccess:'Control de Acceso', secConfig:'Configuración', secExports:'Exportaciones', secSystem:'Sistema',
     navOverview:'Resumen', navReservas:'Reservas', navUpcoming:'Próximas Transferencias', navNova:'Nueva Reserva',
     navAgencias:'Agencias', navPrices:'Precios', navPermissions:'Permisos y acceso', navServices:'Servicios',
-    navTemplates:'Plantillas de Email', navNextLevel:'Next Level', navExportsItem:'Exportar PDF / Excel', navLogs:'Registros del Sistema', navBackup:'Backup / Importación'
+    navTemplates:'Plantillas de Email', navNextLevel:'Next Level', navExportsItem:'Exportar PDF / Excel', navLogs:'Registros del Sistema', navBackup:'Backup / Importación',dispMenu:'Visualización',themeLight:'Claro',themeDark:'Oscuro',sizeSm:'Pequeña',sizeMd:'Mediana',sizeLg:'Grande',themeGroup:'Tema',sizeGroup:'Tamaño del texto',bnRes:'Reservas',bnUpcomingShort:'Próximas',bnNew:'Nueva',bnHotels:'Hoteles',bnMore:'Más',bnAll:'Reservas',bnUpcoming:'Próximas',bnNova:'Nueva',bnHist:'Historial',langLabel:'Idioma'
   }
 };
 function t(k){ return (UI[APP_LANG]&&UI[APP_LANG][k]) || (UI.FR&&UI.FR[k]) || k; }
@@ -1836,15 +1880,57 @@ function setLang(lang, zone){
   if(!UI[lang]) lang='PT';
   APP_LANG = lang;
   try{ localStorage.setItem('ruelas_planb_lang', lang); }catch(e){}
-  const sel = zone==='login' ? '#login-screen .lang-top .lp' : '.topbar-right .lang-app .lp';
-  document.querySelectorAll(sel).forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll(sel).forEach(p=>{ if(p.textContent.trim()===lang) p.classList.add('active'); });
+  document.querySelectorAll('#login-screen .lang-top .lp, .topbar-right .lang-app .lp').forEach(p=>{
+    p.classList.toggle('active', p.textContent.trim()===lang);
+  });
+  document.querySelectorAll('[data-lang-pick]').forEach(b=>{
+    const on=b.getAttribute('data-lang-pick')===lang;
+    b.classList.toggle('on', on);
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on?'true':'false');
+  });
   const loginSel = document.getElementById('lang-login-sel');
   if(loginSel) loginSel.value = lang;
   const appSel = document.getElementById('lang-app-sel');
   if(appSel) appSel.value = lang;
   applyUiLang();
 }
+function applyDispI18n(o){
+  if(!o) return;
+  document.querySelectorAll('.disp-more-btn').forEach(function(b){
+    b.title = o.dispMenu || '';
+    b.setAttribute('aria-label', o.dispMenu || '');
+  });
+  document.querySelectorAll('.disp-menu-pop').forEach(function(p){
+    p.setAttribute('aria-label', o.dispMenu || '');
+  });
+  document.querySelectorAll('.disp-menu-pop .disp-seg').forEach(function(g){
+    if(g.classList.contains('disp-lang')) g.setAttribute('aria-label', o.langLabel||'');
+    else if(g.querySelector('[data-text-size-pick]')) g.setAttribute('aria-label', o.sizeGroup||'');
+    else g.setAttribute('aria-label', o.themeGroup||'');
+  });
+  document.querySelectorAll('.disp-lang-lab').forEach(function(el){ el.textContent = o.langLabel||''; });
+  document.querySelectorAll('.theme-seg[role="group"]').forEach(function(g){
+    g.setAttribute('aria-label', o.themeGroup||'');
+  });
+  document.querySelectorAll('.disp-btn[data-theme-pick="light"]').forEach(function(b){
+    b.textContent = '☀️ ' + (o.themeLight||'');
+    b.title = o.themeLight||'';
+  });
+  document.querySelectorAll('.disp-btn[data-theme-pick="dark"]').forEach(function(b){
+    b.textContent = '🌙 ' + (o.themeDark||'');
+    b.title = o.themeDark||'';
+  });
+  document.querySelectorAll('.theme-seg [data-theme-pick="light"]').forEach(function(b){ b.title = o.themeLight||''; });
+  document.querySelectorAll('.theme-seg [data-theme-pick="dark"]').forEach(function(b){ b.title = o.themeDark||''; });
+  document.querySelectorAll('[data-text-size-pick="sm"]').forEach(function(b){ b.textContent = o.sizeSm||''; });
+  document.querySelectorAll('[data-text-size-pick="md"]').forEach(function(b){ b.textContent = o.sizeMd||''; });
+  document.querySelectorAll('[data-text-size-pick="lg"]').forEach(function(b){ b.textContent = o.sizeLg||''; });
+  document.querySelectorAll('.lang-select-mobile').forEach(function(sel){
+    sel.setAttribute('aria-label', o.langLabel||'');
+  });
+}
+
 function applyUiLang(){
   const s=(id,v)=>{ const el=document.getElementById(id); if(el && v!=null) el.textContent=v; };
   s('lbl-login-badge', t('loginBadge'));
@@ -1876,6 +1962,11 @@ function applyUiLang(){
   s('lbl-nav-exports', t('navExportsItem'));
   s('lbl-nav-logs', t('navLogs'));
   s('lbl-nav-backup', t('navBackup'));
+  applyDispI18n({
+    dispMenu:t('dispMenu'), themeLight:t('themeLight'), themeDark:t('themeDark'),
+    sizeSm:t('sizeSm'), sizeMd:t('sizeMd'), sizeLg:t('sizeLg'),
+    themeGroup:t('themeGroup'), sizeGroup:t('sizeGroup'), langLabel:t('langLabel')
+  });
 }
 function initLangUI(){
   setLang(APP_LANG, 'login');
@@ -2267,7 +2358,7 @@ function renderUpcomingAdmin(){
       html += '<div class="tl-card ' + (isUrgent?'urgent':isToday?'today':'') + '" onclick="openResEdit(\'' + rid + '\')">' +
         '<div><div class="tl-time">' + String(r.heureTransfer||'—').slice(0,5) + '</div><div class="tl-time-lbl">h</div></div>' +
         '<div class="tl-divider"></div><div class="tl-body">' +
-        '<div class="tl-ref">' + r.id + '</div><div class="tl-client">' + (r.clientNom||'—') + '</div>' +
+        '<div class="tl-ref">' + r.id + (typeof isResaNextLevel==='function'&&isResaNextLevel(r)?' '+nlBadgeHtml():'') + '</div><div class="tl-client">' + (r.clientNom||'—') + '</div>' +
         '<div class="tl-route">' + oIco(r.origineType) + ' ' + (r.pointDepart||'—') + ' → ' + (r.destination||'—') + '</div>' +
         '<div class="tl-meta"><span>👤 ' + (r.personnes||'—') + '</span><span>🧳 ' + (r.malas||'0') + '</span>' +
         (r.numVol ? '<span>✈️ ' + r.numVol + '</span>' : '') +
@@ -4662,6 +4753,26 @@ function demoApi(p) {
     btn.addEventListener('click',function(){ setConsoleTheme(this.getAttribute('data-theme-pick')); });
   });
   setConsoleTheme((function(){try{return localStorage.getItem(KEY)==='light'?'light':'dark';}catch(e){return'dark';}})());
+  function closeDispMenu(){
+    document.querySelectorAll('.disp-menu-pop.open').forEach(function(p){p.classList.remove('open');});
+    document.querySelectorAll('.disp-more-btn').forEach(function(b){b.setAttribute('aria-expanded','false');});
+  }
+  window.closeDispMenu=closeDispMenu;
+  window.toggleDispMenu=function(ev){
+    if(ev) ev.stopPropagation();
+    var btn=ev&&ev.currentTarget;
+    var pop=btn&&btn.parentElement&&btn.parentElement.querySelector('.disp-menu-pop');
+    if(!pop) return;
+    var willOpen=!pop.classList.contains('open');
+    closeDispMenu();
+    if(willOpen){ pop.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+  };
+  document.addEventListener('click',function(e){
+    if(document.querySelector('.disp-menu-pop.open')&&!e.target.closest('.disp-menu-anchor'))closeDispMenu();
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&document.querySelector('.disp-menu-pop.open')){e.preventDefault();closeDispMenu();}
+  });
   var SIZE_KEY='nlp_nhalabene_text_size';
   function setTextSize(mode){
     var sz=(mode==='md'||mode==='lg')?mode:'sm';
