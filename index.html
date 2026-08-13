@@ -187,6 +187,7 @@ td.bold{font-weight:600;color:var(--text)}
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap}
+.nl-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:rgba(201,168,76,.18);color:var(--gold);border:1px solid var(--gold-b);border-radius:4px;padding:2px 7px;vertical-align:middle;white-space:nowrap}
 .badge::before{content:'';width:4px;height:4px;border-radius:50%;flex-shrink:0}
 .b-pend{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-b)}.b-pend::before{background:var(--warn)}
 .b-conf{background:var(--success-bg);color:var(--success);border:1px solid var(--success-b)}.b-conf::before{background:var(--success)}
@@ -873,6 +874,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
             </select>
             <select class="tbl-select" id="res-filter-ag" onchange="renderReservas()" style="min-width:160px">
               <option value="">Toutes agences / hôtels</option>
+              <option value="__NEXT_LEVEL__">Next Level</option>
               <option value="__AGENCE__">🏠 Service propre / non attribué</option>
             </select>
             <input type="date" class="tbl-select" id="res-filter-ds" onchange="renderReservas()" title="Date début" style="min-width:130px">
@@ -1990,6 +1992,25 @@ function badge(st) {
 function oIco(t) {
   return { airport: '✈️', hotel: '🏨', bus: '🚌', train: '🚂', highspeed: '🚄' }[t] || '🚗';
 }
+function isResaNextLevel(r) {
+  if (!r) return false;
+  const cree = String(r.criadoPor || r.creePar || r.canal || '').toUpperCase();
+  if (r.fromNextLevel || cree === 'NEXT_LEVEL') return true;
+  return /^NL[-_]/i.test(String(r.id || ''));
+}
+function nlBadgeHtml() {
+  return '<span class="nl-badge" title="Next Level">Next Level</span>';
+}
+function planbHotelLabel(r) {
+  if (isResaNextLevel(r)) {
+    const hid = r.agencyId && r.agencyId !== '__AGENCE__'
+      ? ((S.agencias || []).find(a => a.id === r.agencyId)?.nom || r.agencyId)
+      : '';
+    return hid ? ('Next Level · ' + hid) : 'Next Level';
+  }
+  if (!r.agencyId) return '';
+  return (S.agencias || []).find(a => a.id === r.agencyId)?.nom || r.agencyId;
+}
 
 function toggleNav(){
   const sb=document.getElementById('sidebar');
@@ -2253,8 +2274,8 @@ function fillPlanBAgenceFilters() {
     if (!sel) return;
     const prev = sel.value;
     const first = id === 'pb-hi-ag'
-      ? '<option value="">Tous (global)</option><option value="__AGENCE__">🏠 Service propre / non attribué</option>'
-      : '<option value="">Toutes agences / hôtels</option><option value="__AGENCE__">🏠 Service propre / non attribué</option>';
+      ? '<option value="">Tous (global)</option><option value="__NEXT_LEVEL__">Next Level</option><option value="__AGENCE__">🏠 Service propre / non attribué</option>'
+      : '<option value="">Toutes agences / hôtels</option><option value="__NEXT_LEVEL__">Next Level</option><option value="__AGENCE__">🏠 Service propre / non attribué</option>';
     sel.innerHTML = first;
     (S.agencias || []).filter(a => !['HOTEL_ADMIN', 'PLANB_ADMIN', 'AGENCE_ADMIN', 'MASTER_ADMIN'].includes(a.id)).forEach(a => {
       const op = document.createElement('option');
@@ -2273,10 +2294,12 @@ function planbFilteredReservas() {
   const ds = document.getElementById('res-filter-ds')?.value || '';
   const de = document.getElementById('res-filter-de')?.value || '';
   let data = S.reservas;
-  if (search) data = data.filter(r => (r.id + r.clientNom + r.clientEmail + r.numReservaOta).toLowerCase().includes(search));
+  if (search) data = data.filter(r => (r.id + ' ' + (r.clientNom||'') + ' ' + (r.clientEmail||'') + ' ' + (r.numReservaOta||'') + (isResaNextLevel(r)?' next level nl':'')).toLowerCase().includes(search));
   if (statut) data = data.filter(r => r.statut === statut);
-  if (agence === '__AGENCE__') {
-    data = data.filter(r => !r.agencyId || r.agencyId === '__AGENCE__');
+  if (agence === '__NEXT_LEVEL__') {
+    data = data.filter(isResaNextLevel);
+  } else if (agence === '__AGENCE__') {
+    data = data.filter(r => !isResaNextLevel(r) && (!r.agencyId || r.agencyId === '__AGENCE__'));
   } else if (agence) {
     data = data.filter(r => r.agencyId === agence);
   }
@@ -2376,11 +2399,7 @@ function sortPlanbReservas(rows) {
     if (s === 'non_payé') return 2;
     return 3;
   };
-  const agLab = r => {
-    if (!r || !r.agencyId) return '';
-    const a = (S.agencias || []).find(x => x.id === r.agencyId);
-    return String((a && a.nom) ? (a.nom + ' ' + r.agencyId) : r.agencyId).toLowerCase();
-  };
+  const agLab = r => String(planbHotelLabel(r) || '').toLowerCase();
   const cmp = (a, b) => {
     let r0 = 0;
     switch (k) {
@@ -2490,13 +2509,13 @@ function renderReservas() {
       : `<span style="color:var(--ts);font-size:10px">Non payé</span>`;
 
     html += `<tr>
-      <td class="mono">${r.id}${r.fromNextLevel || r.criadoPor === 'NEXT_LEVEL' || r.canal === 'NEXT_LEVEL' ? ' <span style="font-size:9px;background:rgba(201,168,76,.2);color:var(--gold);border:1px solid var(--gold-b);border-radius:4px;padding:1px 5px;font-weight:700">NL</span>' : ''}</td>
+      <td class="mono">${r.id}${isResaNextLevel(r) ? ' ' + nlBadgeHtml() : ''}</td>
       <td class="bold">${r.clientNom || '—'}</td>
       <td>${fmtDate(r.dateTransfer)}</td>
       <td>${r.heureTransfer || '—'}</td>
       <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">${oIco(r.origineType)} ${r.pointDepart || '—'} → ${r.destination || '—'}</td>
       <td>${r.personnes || '—'}👤</td>
-      <td style="font-size:11px">${r.agencyId || '<span style="color:var(--ts)">—</span>'}</td>
+      <td style="font-size:11px">${isResaNextLevel(r) ? nlBadgeHtml() + (r.agencyId && r.agencyId !== '__AGENCE__' ? ' · <strong>' + ((S.agencias||[]).find(a=>a.id===r.agencyId)?.nom||r.agencyId) + '</strong>' : '') : (r.agencyId ? `<strong>${r.agencyId}</strong>` : '<span style="color:var(--ts)">—</span>')}</td>
       <td><strong>${r.prixFinal ? r.prixFinal + '€' : '—'}</strong></td>
       <td>${payBadge}</td>
       <td>${badge(r.statut)}</td>
@@ -2772,8 +2791,8 @@ function openAdmDetail(id) {
   const r = S.reservas.find(x => x.id === id);
   if (!r) return;
   S.curResId = id;
-  document.getElementById('adm-d-id').textContent = id;
-  const agNom = (S.agencias || []).find(a => a.id === r.agencyId)?.nom || r.agencyId || '—';
+  document.getElementById('adm-d-id').innerHTML = id + (isResaNextLevel(r) ? ' ' + nlBadgeHtml() : '');
+  const agNom = planbHotelLabel(r) || '—';
   document.getElementById('adm-d-grid').innerHTML = [
     admResDetailItem('Client', `<strong>${r.clientNom || '—'}</strong>`),
     admResDetailItem('Email', r.clientEmail),
@@ -2783,7 +2802,7 @@ function openAdmDetail(id) {
     admResDetailItem('Pax / Malas', `${r.personnes || '—'} 👤 · ${r.malas || '0'} 🧳`),
     admResDetailItem('Prix', r.prixFinal ? `<strong style="color:var(--gold)">${r.prixFinal} €</strong>` : '—'),
     admResDetailItem('Statut', badge(r.statut)),
-    admResDetailItem('Agence', r.agencyId ? `<strong>${agNom}</strong> (${r.agencyId})` : '—'),
+    admResDetailItem('Agence / Hôtel', isResaNextLevel(r) ? (nlBadgeHtml() + (r.agencyId && r.agencyId !== '__AGENCE__' ? ` · <strong>${(S.agencias || []).find(a => a.id === r.agencyId)?.nom || r.agencyId}</strong> (${r.agencyId})` : '')) : (r.agencyId ? `<strong>${agNom}</strong> (${r.agencyId})` : '—')),
     admResDetailItem('Paiement', r.statutPaiement || '—'),
     r.commentaires ? admResDetailItem('Commentaires', r.commentaires, true) : ''
   ].join('');
