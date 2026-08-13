@@ -1391,7 +1391,7 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
       <!-- ══ NEXT LEVEL ══ -->
       <div class="section" id="section-nextlevel">
         <div class="section-header">
-          <div class="section-title"><span class="ico">🔗</span> Intégration Next Level → Ruelas</div>
+          <div class="section-title"><span class="ico">🔗</span> Next Level → Ruelas</div>
           <div class="section-actions">
             <button class="btn btn-ghost btn-sm" onclick="loadNextLevelConfig()">↻ Actualiser</button>
             <button class="btn btn-gold btn-sm" onclick="saveNextLevelConfig()">💾 Enregistrer</button>
@@ -1401,83 +1401,43 @@ body{font-size:clamp(13px,1.4vw + 10px,15px)}
         <div class="info-banner gold" style="margin-bottom:14px">
           <span>ℹ️</span>
           <span>
-            Quand Next Level assigne une réservation au partenaire <strong>Ruelas</strong>, elle doit arriver sur ce Sheet Fournisseur
-            (marque <strong>NL</strong>) pour être visible dans le Portal Agence Ruelas. Collez ici l’API Next Level, générez la clé de sync,
-            et donnez à Next Level l’URL + action ci-dessous.
+            Rien n’est modifié chez Next Level. Ici on utilise le <strong>même compte partenaire</strong> que Ruelas a déjà chez Next Level
+            (ID + mot de passe du portail partenaire). Nhalabene récupère les résas déjà assignées à Ruelas, et elles s’affichent
+            dans le Portal Agence Ruelas comme les autres (badge <strong>NL</strong>).
           </span>
         </div>
 
-        <div class="form-grid" style="align-items:stretch">
-          <div class="c-card">
-            <div class="c-card-header"><div class="c-card-title">1 · API Next Level (à coller ici)</div></div>
-            <div class="c-card-body" style="display:flex;flex-direction:column;gap:10px">
-              <div class="fg full">
-                <label>URL API Next Level (/exec)</label>
-                <input type="url" id="nl-api-url" placeholder="https://script.google.com/macros/s/…/exec">
-                <div class="hint">URL Web App du script Apps Script de Next Level (celle utilisée par leur staff).</div>
-              </div>
-              <div class="fg">
-                <label>ID partenaire Ruelas chez Next Level</label>
-                <input type="text" id="nl-partner-id" placeholder="ex. AGN00x ou RUELAS">
-                <div class="hint">Identifiant sous lequel Ruelas apparaît comme partenaire dans Next Level.</div>
-              </div>
-              <div class="fg full">
-                <label>Notes</label>
-                <textarea id="nl-notes" rows="2" style="width:100%;min-height:56px" placeholder="Contact technique, hôtel source, etc."></textarea>
-              </div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <button type="button" class="btn btn-ghost" onclick="pingNextLevelApi()">🏓 Tester l’URL Next Level</button>
-                <span id="nl-ping-msg" style="font-size:12px;color:var(--ts);align-self:center"></span>
-              </div>
-            </div>
+        <div class="c-card" style="max-width:720px">
+          <div class="c-card-header">
+            <div class="c-card-title">Compte partenaire Ruelas chez Next Level</div>
+            <span id="nl-saved-badge" style="display:none;font-size:11px;font-weight:700;color:var(--success);border:1px solid var(--success);border-radius:4px;padding:2px 8px">Enregistré</span>
           </div>
-
-          <div class="c-card">
-            <div class="c-card-header"><div class="c-card-title">2 · Ce que Next Level doit appeler (Fournisseur)</div></div>
-            <div class="c-card-body" style="display:flex;flex-direction:column;gap:10px">
-              <div class="fg full">
-                <label>URL API Fournisseur (cette instance)</label>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <input type="url" id="nl-fourn-api" style="flex:1" placeholder="https://script.google.com/macros/s/…/exec">
-                  <button type="button" class="btn btn-ghost btn-sm" onclick="copyNlField('nl-fourn-api')" title="Copier">📋</button>
-                </div>
-                <div class="hint">Par défaut = API de ce portail Nhalabene. À transmettre à Next Level.</div>
-              </div>
-              <div class="fg full">
-                <label>Clé de sync (syncKey)</label>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <input type="password" id="nl-sync-key" style="flex:1" autocomplete="off" placeholder="— générer ou coller —">
-                  <button type="button" class="btn btn-ghost btn-sm" onclick="toggleNlSyncKey()" title="Révéler">👁</button>
-                  <button type="button" class="btn btn-ghost btn-sm" onclick="copyNlField('nl-sync-key')" title="Copier">📋</button>
-                </div>
-                <div class="hint">Next Level envoie cette clé dans chaque push. Régénérer invalide l’ancienne clé.</div>
-              </div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <button type="button" class="btn btn-ghost" onclick="regenNlSyncKey()">🔑 Générer / régénérer la clé</button>
-              </div>
-              <div class="info-banner" style="margin:0;background:var(--card);border:1px solid var(--border)">
-                <span>📤</span>
-                <span style="font-size:12px;line-height:1.45">
-                  Action : <code style="color:var(--gold)">nextLevel_pushReserva</code><br>
-                  Cible Ruelas : <code id="nl-target-agency" style="color:var(--gold)">__AGENCE__</code><br>
-                  Exemple JSON :<br>
-                  <code id="nl-example-json" style="display:block;margin-top:6px;white-space:pre-wrap;word-break:break-all;font-size:11px;color:var(--tm)"></code>
-                </span>
-              </div>
+          <div class="c-card-body" style="display:flex;flex-direction:column;gap:12px">
+            <div class="fg full">
+              <label>1. URL API Next Level</label>
+              <input type="url" id="nl-api-url" placeholder="https://script.google.com/macros/s/…/exec">
+              <div class="hint">La même URL /exec que le portail partenaire Next Level utilise déjà.</div>
             </div>
-          </div>
-        </div>
-
-        <div class="c-card" style="margin-top:14px">
-          <div class="c-card-header"><div class="c-card-title">Flux</div></div>
-          <div class="c-card-body" style="font-size:13px;color:var(--tm);line-height:1.55">
-            <ol style="margin:0;padding-left:18px">
-              <li>Next Level crée / assigne une résa vers le partenaire Ruelas.</li>
-              <li>Leur script appelle l’URL Fournisseur + <code>nextLevel_pushReserva</code> + <code>syncKey</code>.</li>
-              <li>La résa apparaît ici (badge <strong>NL</strong>) et dans le Portal Agence Ruelas.</li>
-              <li>Sans branchement API : créer manuellement via <em>Nova reserva</em> + case « Canal Next Level → partenaire Ruelas ».</li>
-            </ol>
-            <p id="nl-save-msg" style="margin:12px 0 0;font-size:12px;color:var(--ts)"></p>
+            <div class="fg">
+              <label>2. ID partenaire</label>
+              <input type="text" id="nl-partner-id" placeholder="ex. AGN001" autocomplete="off">
+              <div class="hint">L’identifiant avec lequel Ruelas se connecte chez Next Level.</div>
+            </div>
+            <div class="fg">
+              <label>3. Mot de passe partenaire</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input type="password" id="nl-partner-pass" style="flex:1" autocomplete="new-password" placeholder="••••••••">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="toggleNlPass()" title="Révéler">👁</button>
+              </div>
+              <div class="hint" id="nl-pass-hint">Saisi une fois, il reste enregistré. Inutile de le retaper ensuite.</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <button type="button" class="btn btn-ghost" onclick="pingNextLevelApi()">🏓 Tester la connexion</button>
+              <button type="button" class="btn btn-gold" onclick="pullNextLevelReservas()">⬇ Importer les réservations</button>
+              <button type="button" class="btn btn-danger btn-sm" id="nl-btn-clear" onclick="clearNextLevelConfig()" style="margin-left:auto">🗑 Recommencer à zéro</button>
+            </div>
+            <p id="nl-save-msg" style="margin:0;font-size:12px;color:var(--ts)"></p>
+            <p id="nl-last-pull" style="margin:0;font-size:12px;color:var(--tm)"></p>
           </div>
         </div>
       </div>
@@ -3854,142 +3814,147 @@ function insertVar(v) {
 }
 
 // ─────────────────────────────────────────────
-// NEXT LEVEL (intégration → Ruelas)
+// NEXT LEVEL (récupération partenaire → Ruelas — Next Level inchangé)
 // ─────────────────────────────────────────────
-function updateNlExampleJson() {
-  const url = (document.getElementById('nl-fourn-api')?.value || API_URL || '').trim();
-  const key = (document.getElementById('nl-sync-key')?.value || 'VOTRE_SYNC_KEY').trim() || 'VOTRE_SYNC_KEY';
-  const target = document.getElementById('nl-target-agency')?.textContent || '__AGENCE__';
-  const ex = {
-    action: 'nextLevel_pushReserva',
-    syncKey: key,
-    agencyId: target,
-    nom: 'Cliente Exemplo',
-    email: 'cliente@email.com',
-    telephone: '+351900000000',
-    dateTransfer: '2026-08-20',
-    heureTransfer: '14:00',
-    pointDepart: 'Aeroporto Lisboa',
-    destination: 'Hotel centro',
-    personnes: 2,
-    statut: 'pendente'
+function nlPayload() {
+  const pass = (document.getElementById('nl-partner-pass')?.value || '').trim();
+  const o = {
+    planbToken: S.token,
+    nextLevelApiUrl: document.getElementById('nl-api-url')?.value || '',
+    partnerAgencyId: document.getElementById('nl-partner-id')?.value || ''
   };
-  const el = document.getElementById('nl-example-json');
-  if (el) el.textContent = JSON.stringify(ex, null, 2);
-  void url;
+  if (pass) o.motDePasse = pass;
+  return o;
+}
+function nlSetMsg(text, ok) {
+  const msg = document.getElementById('nl-save-msg');
+  if (!msg) return;
+  msg.textContent = text || '';
+  msg.style.color = ok === true ? 'var(--success)' : (ok === false ? 'var(--danger)' : 'var(--ts)');
+}
+function nlApplyConfig(c) {
+  c = c || {};
+  const urlEl = document.getElementById('nl-api-url');
+  const idEl = document.getElementById('nl-partner-id');
+  const passEl = document.getElementById('nl-partner-pass');
+  if (urlEl) urlEl.value = c.nextLevelApiUrl || '';
+  if (idEl) idEl.value = c.partnerAgencyId || '';
+  if (passEl) {
+    passEl.value = '';
+    passEl.placeholder = c.hasPassword ? 'déjà enregistré — inutile de retaper' : '••••••••';
+  }
+  const hint = document.getElementById('nl-pass-hint');
+  if (hint) {
+    hint.textContent = c.hasPassword
+      ? 'Enregistré. Laissez vide. Saisissez un nouveau mot de passe seulement si vous le changez chez Next Level.'
+      : 'Saisi une fois, il reste enregistré. Inutile de le retaper ensuite.';
+  }
+  const badge = document.getElementById('nl-saved-badge');
+  if (badge) badge.style.display = c.saved ? 'inline-block' : 'none';
+  const last = document.getElementById('nl-last-pull');
+  if (last) {
+    if (c.lastPullAt) {
+      last.textContent = 'Dernier import : ' + c.lastPullAt + (c.lastPullCount ? ' — ' + c.lastPullCount + ' résa(s) lues chez Next Level' : '');
+    } else if (c.saved) {
+      last.textContent = 'Compte enregistré. Vous pouvez importer sans retaper les identifiants.';
+    } else {
+      last.textContent = 'Pas encore enregistré — remplir une fois, puis Tester ou Enregistrer.';
+    }
+  }
 }
 
 async function loadNextLevelConfig() {
-  const msg = document.getElementById('nl-save-msg');
-  if (msg) msg.textContent = '';
+  nlSetMsg('');
   try {
     const d = await api({ action: 'planb_getNextLevelConfig', planbToken: S.token });
     if (!d.success) {
       if (d.sessionExpired) doLogout();
-      if (msg) msg.textContent = d.error || 'Erreur chargement';
+      nlSetMsg(d.error || 'Erreur chargement', false);
       return;
     }
-    const c = d.config || {};
-    const fourn = (c.fournisseurApiUrl || API_URL || '').trim();
-    document.getElementById('nl-api-url').value = c.nextLevelApiUrl || '';
-    document.getElementById('nl-partner-id').value = c.partnerAgencyId || '';
-    document.getElementById('nl-notes').value = c.notes || '';
-    document.getElementById('nl-fourn-api').value = fourn;
-    document.getElementById('nl-sync-key').value = c.syncKey || '';
-    document.getElementById('nl-sync-key').type = 'password';
-    if (document.getElementById('nl-target-agency')) {
-      document.getElementById('nl-target-agency').textContent = c.targetAgencyId || '__AGENCE__';
-    }
-    updateNlExampleJson();
+    nlApplyConfig(d.config);
   } catch (e) {
-    if (msg) msg.textContent = e.message || 'Erreur réseau';
+    nlSetMsg(e.message || 'Erreur réseau', false);
   }
 }
 
-async function saveNextLevelConfig(opts) {
-  const msg = document.getElementById('nl-save-msg');
-  if (msg) { msg.textContent = 'Enregistrement…'; msg.style.color = 'var(--ts)'; }
+async function saveNextLevelConfig() {
+  nlSetMsg('Enregistrement…');
   try {
-    const payload = {
-      action: 'planb_saveNextLevelConfig',
-      planbToken: S.token,
-      nextLevelApiUrl: document.getElementById('nl-api-url')?.value || '',
-      fournisseurApiUrl: document.getElementById('nl-fourn-api')?.value || API_URL || '',
-      partnerAgencyId: document.getElementById('nl-partner-id')?.value || '',
-      notes: document.getElementById('nl-notes')?.value || '',
-      syncKey: document.getElementById('nl-sync-key')?.value || '',
-      regenerateSyncKey: !!(opts && opts.regenerateSyncKey)
-    };
-    const d = await api(payload);
+    const d = await api(Object.assign({ action: 'planb_saveNextLevelConfig' }, nlPayload()));
     if (!d.success) {
       if (d.sessionExpired) doLogout();
-      if (msg) { msg.textContent = d.error || 'Échec'; msg.style.color = 'var(--danger)'; }
+      nlSetMsg(d.error || 'Échec', false);
       return;
     }
-    const c = d.config || {};
-    document.getElementById('nl-sync-key').value = c.syncKey || '';
-    if (c.fournisseurApiUrl) document.getElementById('nl-fourn-api').value = c.fournisseurApiUrl;
-    updateNlExampleJson();
-    if (msg) {
-      msg.textContent = opts && opts.regenerateSyncKey
-        ? 'Clé régénérée et config enregistrée.'
-        : 'Configuration Next Level enregistrée.';
-      msg.style.color = 'var(--success)';
-    }
+    nlApplyConfig(d.config);
+    nlSetMsg(d.config && d.config.saved
+      ? 'Enregistré. Ce compte restera mémorisé jusqu’à « Recommencer à zéro ».'
+      : 'Enregistré. Ajoutez le mot de passe une fois (Tester ou Enregistrer) pour le mémoriser.', true);
   } catch (e) {
-    if (msg) { msg.textContent = e.message || 'Erreur réseau'; msg.style.color = 'var(--danger)'; }
+    nlSetMsg(e.message || 'Erreur réseau', false);
   }
 }
 
-async function regenNlSyncKey() {
-  if (!confirm('Régénérer la clé de sync ? L’ancienne clé ne fonctionnera plus côté Next Level.')) return;
-  await saveNextLevelConfig({ regenerateSyncKey: true });
-}
-
-function toggleNlSyncKey() {
-  const el = document.getElementById('nl-sync-key');
+function toggleNlPass() {
+  const el = document.getElementById('nl-partner-pass');
   if (!el) return;
   el.type = el.type === 'password' ? 'text' : 'password';
 }
 
-async function copyNlField(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  try {
-    await navigator.clipboard.writeText(el.value || '');
-    const msg = document.getElementById('nl-save-msg');
-    if (msg) { msg.textContent = 'Copié.'; msg.style.color = 'var(--success)'; }
-  } catch (e) {
-    el.select();
-    document.execCommand('copy');
-  }
-}
-
 async function pingNextLevelApi() {
-  const msg = document.getElementById('nl-ping-msg');
-  if (msg) { msg.textContent = 'Test…'; msg.style.color = 'var(--ts)'; }
+  nlSetMsg('Test de connexion chez Next Level…');
   try {
-    const d = await api({
-      action: 'planb_pingNextLevel',
-      planbToken: S.token,
-      apiUrl: document.getElementById('nl-api-url')?.value || ''
-    });
+    const d = await api(Object.assign({ action: 'planb_pingNextLevel' }, nlPayload()));
     if (!d.success) {
       if (d.sessionExpired) doLogout();
-      if (msg) { msg.textContent = d.error || 'Échec'; msg.style.color = 'var(--danger)'; }
+      nlSetMsg(d.error || 'Échec', false);
       return;
     }
-    if (msg) {
-      msg.textContent = d.message + (d.hint ? ' — ' + d.hint : '');
-      msg.style.color = 'var(--success)';
-    }
+    if (d.config) nlApplyConfig(d.config);
+    nlSetMsg(d.message || 'Connexion OK — enregistrée.', true);
   } catch (e) {
-    if (msg) { msg.textContent = e.message || 'Erreur'; msg.style.color = 'var(--danger)'; }
+    nlSetMsg(e.message || 'Erreur', false);
   }
 }
 
-document.getElementById('nl-sync-key')?.addEventListener('input', updateNlExampleJson);
-document.getElementById('nl-fourn-api')?.addEventListener('input', updateNlExampleJson);
+async function pullNextLevelReservas() {
+  nlSetMsg('Import depuis Next Level…');
+  try {
+    const d = await api(Object.assign({ action: 'planb_pullNextLevel' }, nlPayload()));
+    if (!d.success) {
+      if (d.sessionExpired) doLogout();
+      nlSetMsg(d.error || 'Échec', false);
+      return;
+    }
+    if (d.config) nlApplyConfig(d.config);
+    nlSetMsg(d.message || 'Import terminé.', true);
+  } catch (e) {
+    nlSetMsg(e.message || 'Erreur', false);
+  }
+}
+
+function clearNextLevelConfig() {
+  confirmDanger(
+    'Recommencer à zéro',
+    'Effacer l’URL, l’ID et le mot de passe Next Level enregistrés ? Les réservations déjà importées restent dans la liste. Vous pourrez tout ressaisir ensuite.',
+    async () => {
+      nlSetMsg('Effacement…');
+      try {
+        const d = await api({ action: 'planb_clearNextLevelConfig', planbToken: S.token });
+        if (!d.success) {
+          if (d.sessionExpired) doLogout();
+          nlSetMsg(d.error || 'Échec', false);
+          return;
+        }
+        nlApplyConfig(d.config);
+        nlSetMsg(d.message || 'Effacé. Vous pouvez recommencer à zéro.', true);
+      } catch (e) {
+        nlSetMsg(e.message || 'Erreur', false);
+      }
+    }
+  );
+}
 
 // ─────────────────────────────────────────────
 // LOGS
